@@ -36,3 +36,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+
+    def __str__(self):
+        user_representation = self.first_name
+        if self.last_name is not None:
+            user_representation += f" {self.last_name}"
+        return user_representation
