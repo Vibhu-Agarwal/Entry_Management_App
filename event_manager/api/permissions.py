@@ -1,10 +1,13 @@
+from django.conf import settings
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 from django.contrib.auth.mixins import UserPassesTestMixin
+
+HOST_REPR = settings.HOST_REPR
 
 
 class IsHostMixin(UserPassesTestMixin):
     def test_func(self):
-        return self.request.user.user_type == 'employee'
+        return self.request.user.user_type == HOST_REPR
 
 
 class IsManagementMixin(UserPassesTestMixin):
@@ -17,9 +20,9 @@ class IsVisitHost(BasePermission):
     def has_object_permission(self, request, view, obj):
 
         if request.method in SAFE_METHODS:
-            return (obj.host.user_type == 'employee') and (obj.host == request.user)
+            return (obj.host.user_type == HOST_REPR) and (obj.host == request.user)
 
-        return (obj.host.user_type == 'employee') and (obj.host == request.user)
+        return (obj.host.user_type == HOST_REPR) and (obj.host == request.user)
 
 
 class IsVisitVisitor(BasePermission):

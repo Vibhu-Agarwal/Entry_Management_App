@@ -1,4 +1,5 @@
 from .managers import CustomUserManager
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
@@ -11,8 +12,9 @@ PHONE_REGEX = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                              message="Phone number must be entered in the format: '+999999999'. "
                                      "Up to 15 digits allowed.")
 
+HOST_REPR = settings.HOST_REPR
 USER_TYPE = (
-    ('employee', 'Employee'),
+    (HOST_REPR, 'Employee'),
     ('management', 'Management'),
     ('visitor', 'Visitor'),
 )
@@ -26,7 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(validators=[PHONE_REGEX], max_length=17)
     user_type = models.CharField(max_length=15, choices=USER_TYPE, default='visitor')
     is_active = models.BooleanField(_('is active'), default=True)
-    is_staff = models.BooleanField(_('staff'))
+    is_staff = models.BooleanField(_('staff'), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     objects = CustomUserManager()
 

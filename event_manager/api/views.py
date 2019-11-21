@@ -1,18 +1,42 @@
+from django.conf import settings
 from visit.serializers import (VisitSerializer, GETVisitSerializer,
                                GETHostVisitSerializer, GETVisitorVisitSerializer)
-from users.serializers import UserSerializer
+from users.serializers import (UserSerializer, HostCreateSerializer,
+                               VisitorCreateSerializer)
 from visit.models import Visit
 from users.models import User
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.serializers import BaseSerializer
 from api.permissions import (IsVisitHost, IsVisitVisitor,
                              IsHostMixin, IsManagementMixin)
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+HOST_REPR = settings.HOST_REPR
 
-class HostsAPIView(LoginRequiredMixin, IsManagementMixin, ListAPIView):
+
+class CreateHostAPIView(LoginRequiredMixin, IsManagementMixin, CreateAPIView):
+    serializer_class = HostCreateSerializer
+
+    def perform_create(self, serializer: BaseSerializer):
+        serializer.save(user_type=HOST_REPR)
+
+
+class CreateVisitorAPIView(CreateAPIView):
+    serializer_class = VisitorCreateSerializer
+
+    def perform_create(self, serializer: BaseSerializer):
+        serializer.save(user_type='visitor')
+
+
+class ListHostsAPIView(LoginRequiredMixin, IsManagementMixin, ListAPIView):
     serializer_class = UserSerializer
-    queryset = User.objects.filter(user_type='employee')
+    queryset = User.objects.filter(user_type=HOST_REPR)
+
+
+class ListVisitorsAPIView(LoginRequiredMixin, IsManagementMixin, ListAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(user_type='visitor')
 
 
 class HostVisitsAPIView(LoginRequiredMixin, IsHostMixin, ListAPIView):

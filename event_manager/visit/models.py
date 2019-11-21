@@ -1,8 +1,10 @@
+from django.conf import settings
 from django.db import models
 from users.models import User
 from django.core.exceptions import ValidationError
 
 from django.utils.translation import ugettext_lazy as _
+HOST_REPR = settings.HOST_REPR
 
 
 class Visit(models.Model):
@@ -24,7 +26,7 @@ class Visit(models.Model):
             raise ValidationError('Host cannot be the same as Visitor')
         if self.in_time >= self.out_time:
             raise ValidationError('Exit time must be greater than entry time')
-        if self.host.user_type != 'employee':
+        if self.host.user_type != HOST_REPR:
             raise ValidationError('Host must be an office employee')
         super().clean()
 

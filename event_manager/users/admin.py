@@ -7,6 +7,7 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('id',)
     list_display = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'user_type', 'is_active', 'is_staff')
     list_display_links = ('id', 'first_name', 'last_name', 'email')
+    list_filter = ('user_type', 'is_staff')
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
