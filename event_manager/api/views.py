@@ -1,5 +1,5 @@
 from django.conf import settings
-from visit.serializers import (VisitSerializer, GETVisitSerializer,
+from visit.serializers import (VisitSerializer, GETVisitSerializer, VisitorVisitSerializer,
                                GETHostVisitSerializer, GETVisitorVisitSerializer)
 from users.serializers import (UserSerializer, HostCreateSerializer,
                                VisitorCreateSerializer)
@@ -13,6 +13,16 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 HOST_REPR = settings.HOST_REPR
+
+
+class ListHostsAPIView(LoginRequiredMixin, IsManagementMixin, ListAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(user_type=HOST_REPR)
+
+
+class ListVisitorsAPIView(LoginRequiredMixin, IsManagementMixin, ListAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(user_type='visitor')
 
 
 class CreateHostAPIView(LoginRequiredMixin, IsManagementMixin, CreateAPIView):
@@ -29,14 +39,11 @@ class CreateVisitorAPIView(CreateAPIView):
         serializer.save(user_type='visitor')
 
 
-class ListHostsAPIView(LoginRequiredMixin, IsManagementMixin, ListAPIView):
-    serializer_class = UserSerializer
-    queryset = User.objects.filter(user_type=HOST_REPR)
+class CreateVisitAPIView(CreateAPIView):
+    serializer_class = VisitorVisitSerializer
 
-
-class ListVisitorsAPIView(LoginRequiredMixin, IsManagementMixin, ListAPIView):
-    serializer_class = UserSerializer
-    queryset = User.objects.filter(user_type='visitor')
+    def perform_create(self, serializer: BaseSerializer):
+        serializer.save(visitor=self.request.user)
 
 
 class HostVisitsAPIView(LoginRequiredMixin, IsHostMixin, ListAPIView):
@@ -44,7 +51,7 @@ class HostVisitsAPIView(LoginRequiredMixin, IsHostMixin, ListAPIView):
 
     def get_queryset(self):
         host = self.request.user
-        return Visit.objects.filter(host=host)
+        return host.host_visits.all()
 
 
 class VisitorVisitsAPIView(LoginRequiredMixin, ListAPIView):
@@ -52,4 +59,4 @@ class VisitorVisitsAPIView(LoginRequiredMixin, ListAPIView):
 
     def get_queryset(self):
         visitor = self.request.user
-        return Visit.objects.filter(visitor=visitor)
+        return visitor.visitor_visits.all()

@@ -25,10 +25,13 @@ class GETHostVisitSerializer(serializers.ModelSerializer):
         exclude = ('host',)
 
 
-class GETVisitorVisitSerializer(serializers.ModelSerializer):
-
-    host = UserSerializer(read_only=True)
+class VisitorVisitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Visit
         exclude = ('visitor',)
+
+
+class GETVisitorVisitSerializer(VisitorVisitSerializer):
+
+    host = UserSerializer(read_only=True)
