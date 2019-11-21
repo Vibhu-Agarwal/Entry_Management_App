@@ -24,7 +24,7 @@ class Visit(models.Model):
     def clean(self):
         if self.visitor.email == self.host.email:
             raise ValidationError('Host cannot be the same as Visitor')
-        if self.in_time >= self.out_time:
+        if self.out_time and self.in_time >= self.out_time:
             raise ValidationError('Exit time must be greater than entry time')
         if self.host.user_type != HOST_REPR:
             raise ValidationError('Host must be an office employee')

@@ -1,9 +1,8 @@
 from django.conf import settings
-from visit.serializers import (VisitSerializer, GETVisitSerializer, VisitorVisitSerializer,
-                               GETHostVisitSerializer, GETVisitorVisitSerializer)
+from visit.serializers import (GETVisitSerializer, CreateVisitorVisitSerializer,
+                               GETHostVisitSerializer, GETVisitorVisitSerializer,)
 from users.serializers import (UserSerializer, HostCreateSerializer,
                                VisitorCreateSerializer)
-from visit.models import Visit
 from users.models import User
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.serializers import BaseSerializer
@@ -40,7 +39,7 @@ class CreateVisitorAPIView(CreateAPIView):
 
 
 class CreateVisitAPIView(CreateAPIView):
-    serializer_class = VisitorVisitSerializer
+    serializer_class = CreateVisitorVisitSerializer
 
     def perform_create(self, serializer: BaseSerializer):
         serializer.save(visitor=self.request.user)
