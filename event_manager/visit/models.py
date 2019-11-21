@@ -2,22 +2,14 @@ from django.conf import settings
 from django.db import models
 from users.models import User
 from django.core.exceptions import ValidationError
-from django.utils.functional import lazy as lazy_choices
 from django.utils.translation import ugettext_lazy as _
 HOST_REPR = settings.HOST_REPR
 
 
-def get_host_choices_list():
-    choices_list = []
-    hosts = User.objects.filter(user_type=HOST_REPR)
-    for host in hosts:
-        choices_list.append((host.id, str(host)))
-    return choices_list
-
-
 class Visit(models.Model):
     visitor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='visitor_visits')
-    host = models.ForeignKey(User, on_delete=models.CASCADE, related_name='host_visits')
+    host = models.ForeignKey(User, on_delete=models.CASCADE, related_name='host_visits',
+                             limit_choices_to={'user_type': HOST_REPR})
     in_time = models.DateTimeField(null=True, blank=True)
     out_time = models.DateTimeField(null=True, blank=True)
     purpose = models.CharField(max_length=100, null=True, blank=True)
@@ -25,10 +17,6 @@ class Visit(models.Model):
     class Meta:
         verbose_name = _('visit')
         verbose_name_plural = _('visits')
-
-    def __init__(self, *args, **kwargs):
-        super(Visit, self).__init__(*args, **kwargs)
-        self._meta.get_field('host').choices = lazy_choices(get_host_choices_list, list)()
 
     def __str__(self):
         return f'{self.visitor} -> {self.host}'
