@@ -1,0 +1,18 @@
+{% extends "mail_templated/base.tpl" %}
+
+{% block subject %}
+{{email_subject}}
+{% endblock %}
+
+{% block html %}
+<center>
+    <table border="0" cellspacing="2" cellpadding="5" align="center" bgcolor="#333">
+        {% for key, value in visitor_data.items %}
+        <tr bgcolor="#ffffff">
+            <th>{{key}}</th>
+            <td>{{value}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+{% endblock %}

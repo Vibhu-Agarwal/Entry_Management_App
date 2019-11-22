@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'users',
     'visit',
     'management',
-    'api'
+    'api',
+    'mail_templated'
 ]
 
 MIDDLEWARE = [
@@ -85,6 +86,14 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = os.environ.get('EM_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EM_EMAIL_HOST_PASSWORD')
 
 
 # Password validation

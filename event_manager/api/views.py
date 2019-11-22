@@ -1,15 +1,21 @@
 from django.conf import settings
+from users.models import User
+
+from rest_framework.serializers import BaseSerializer
 from visit.serializers import (GETVisitSerializer, CreateVisitorVisitSerializer,
                                GETHostVisitSerializer, GETVisitorVisitSerializer,)
 from users.serializers import (UserSerializer, HostCreateSerializer,
                                VisitorCreateSerializer)
-from users.models import User
+
 from rest_framework.generics import ListAPIView, CreateAPIView
-from rest_framework.serializers import BaseSerializer
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework.permissions import (AllowAny, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from api.permissions import (IsVisitHost, IsVisitVisitor,
                              IsHostMixin, IsManagementMixin)
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from api.mailing import send_host_email
 
 HOST_REPR = settings.HOST_REPR
 
@@ -41,8 +47,10 @@ class CreateVisitorAPIView(CreateAPIView):
 class CreateVisitAPIView(CreateAPIView):
     serializer_class = CreateVisitorVisitSerializer
 
-    def perform_create(self, serializer: BaseSerializer):
-        serializer.save(visitor=self.request.user)
+    def perform_create(self, serializer: CreateVisitorVisitSerializer):
+        visitor = self.request.user
+        serializer.save(visitor=visitor)
+        send_host_email(serializer, visitor)
 
 
 class HostVisitsAPIView(LoginRequiredMixin, IsHostMixin, ListAPIView):
