@@ -95,6 +95,22 @@ EMAIL_USE_SSL = False
 EMAIL_HOST_USER = os.environ.get('EM_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EM_EMAIL_HOST_PASSWORD')
 
+EM_DEFAULT_COMPANY_NAME = os.environ.get('EM_DEFAULT_COMPANY_NAME', 'Holmes Home')
+EM_DEFAULT_COMPANY_ADD_1 = os.environ.get('EM_DEFAULT_COMPANY_ADD_1', '221B Baker Street')
+EM_DEFAULT_COMPANY_ADD_2 = os.environ.get('EM_DEFAULT_COMPANY_ADD_2', None)
+EM_DEFAULT_COMPANY_ZIP_CODE = os.environ.get('EM_DEFAULT_COMPANY_ZIP_CODE', 'NW1 6XE')
+EM_DEFAULT_COMPANY_CITY = os.environ.get('EM_DEFAULT_COMPANY_CITY', 'London')
+EM_DEFAULT_COMPANY_COUNTRY = os.environ.get('EM_DEFAULT_COMPANY_COUNTRY', 'England')
+
+DEFAULT_OFFICE_ADDRESS = {
+    'name': EM_DEFAULT_COMPANY_NAME,
+    'add1': EM_DEFAULT_COMPANY_ADD_1,
+    'add2': EM_DEFAULT_COMPANY_ADD_2,
+    'zip': EM_DEFAULT_COMPANY_ZIP_CODE,
+    'city': EM_DEFAULT_COMPANY_CITY,
+    'country': EM_DEFAULT_COMPANY_COUNTRY
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
