@@ -111,6 +111,7 @@ DEFAULT_OFFICE_ADDRESS = {
     'country': EM_DEFAULT_COMPANY_COUNTRY
 }
 
+ALLOW_EMAILS = False
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
