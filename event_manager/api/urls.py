@@ -3,7 +3,8 @@ from api.views import (ListHostsAPIView, ListVisitorsAPIView,
                        CreateVisitAPIView, CheckoutVisitAPIView,
                        HostVisitsAPIView, VisitorVisitsAPIView,
                        CreateVisitAndVisitorAPIView,
-                       CreateOfficeBranchAPIView)
+                       CreateOfficeBranchAPIView,
+                       UserDetailAjaxAPIView)
 
 from django.urls import path
 
@@ -23,5 +24,7 @@ urlpatterns = [
     path('visits/host/', HostVisitsAPIView.as_view(), name='user_host_visits_list'),
     path('visits/visitor/', VisitorVisitsAPIView.as_view(), name='user_visitor_visits_list'),
 
-    path('office/branch/new/', CreateOfficeBranchAPIView.as_view(), name='new_office_branch')
+    path('office/branch/new/', CreateOfficeBranchAPIView.as_view(), name='new_office_branch'),
+
+    path('user/detail/', UserDetailAjaxAPIView.as_view(), name='ajax_user_detail')
 ]

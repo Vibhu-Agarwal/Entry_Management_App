@@ -2,6 +2,7 @@ from django.conf import settings
 from users.models import User
 
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 from rest_framework.serializers import BaseSerializer
 from api.serializers import VisitAndVisitorSerializer
@@ -12,6 +13,8 @@ from users.serializers import (UserSerializer, HostCreateSerializer,
                                VisitorCreateSerializer, OfficeBranchSerializer)
 
 from rest_framework.response import Response
+
+from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -107,3 +110,12 @@ class VisitorVisitsAPIView(LoginRequiredMixin, ListAPIView):
     def get_queryset(self):
         visitor = self.request.user
         return visitor.visitor_visits.all()
+
+
+class UserDetailAjaxAPIView(APIView):
+
+    def get(self, request):
+        email_id = request.query_params.get('email_id')
+        searched_user = get_object_or_404(User, email=email_id)
+        searched_user_data = UserSerializer(searched_user).data
+        return Response(searched_user_data)
