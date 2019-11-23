@@ -59,6 +59,7 @@ class CreateVisitAPIView(CreateAPIView):
 
 class CheckoutVisitAPIView(UpdateAPIView):
     serializer_class = UpdateVisitorVisitSerializer
+    permission_classes = (IsVisitVisitor,)
 
     def get_queryset(self):
         visitor = self.request.user
