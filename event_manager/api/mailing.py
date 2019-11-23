@@ -20,8 +20,9 @@ def send_host_email(visit_serializer: CreateVisitorVisitSerializer, visitor: Use
         'Email': visitor_email,
         'Phone': visitor_phone,
         'Check-In Time': in_time,
-        'Purpose': purpose
     }
+    if purpose:
+        visitor_data['Purpose'] = purpose
     send_mail(template_name='host_email.html',
               context={
                   'email_subject': email_subject,
@@ -31,4 +32,23 @@ def send_host_email(visit_serializer: CreateVisitorVisitSerializer, visitor: Use
 
 
 def send_visitor_checkout_email(visit_instance: Visit):
-    pass
+    visitor = visit_instance.visitor
+    host = visit_instance.host
+    email_subject = f"Visit Details | {host}"
+    visitor_email = [visitor.email]
+    visit_data = {
+        'Host': str(host),
+        'Email': host.email,
+        'Phone': host.phone_number,
+        'Check-In Time': visit_instance.in_time,
+        'Check-Out Time': visit_instance.out_time,
+        'Address': 'To be addressed :p'
+    }
+    if visit_instance.purpose:
+        visit_data['Purpose'] = visit_instance.purpose
+    send_mail(template_name='visitor_checkout_email.html',
+              context={
+                  'email_subject': email_subject,
+                  'visit_data': visit_data
+              },
+              from_email=settings.EMAIL_HOST, recipient_list=visitor_email)

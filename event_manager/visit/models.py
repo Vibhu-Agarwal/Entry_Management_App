@@ -30,6 +30,8 @@ class Visit(models.Model):
             raise ValidationError('Exit time must be greater than entry time')
         if self.host.user_type != HOST_REPR:
             raise ValidationError('Host must be an office employee')
+        if (self.purpose is not None) and len(self.purpose) == 0:
+            self.purpose = None
         super().clean()
 
     def save(self, force_insert=False, force_update=False, using=None,
