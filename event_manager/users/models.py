@@ -26,7 +26,7 @@ USER_TYPE = (
 
 class OfficeBranch(models.Model):
     name = models.CharField(
-        _("Full name"),
+        _("Name"),
         max_length=1024,
         default=DEFAULT_OFFICE_ADDRESS['name']
     )
@@ -38,7 +38,8 @@ class OfficeBranch(models.Model):
     address2 = models.CharField(
         _("Address line 2"),
         max_length=1024,
-        default=DEFAULT_OFFICE_ADDRESS['add2']
+        default=DEFAULT_OFFICE_ADDRESS['add2'],
+        blank=True, null=True,
     )
     zip_code = models.CharField(
         _("ZIP / Postal code"),
@@ -95,6 +96,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.user_type == HOST_REPR:
             if not self.office_branch:
                 raise ValidationError("Employees Must be associated with an Office Branch")
+        elif self.user_type == 'visitor':
+            if self.office_branch:
+                raise ValidationError("Visitors cannot have an Office Branch associated with them")
         super().clean()
 
     def save(self, force_insert=False, force_update=False, using=None,

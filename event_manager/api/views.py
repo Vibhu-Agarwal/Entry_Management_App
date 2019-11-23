@@ -1,5 +1,5 @@
 from django.conf import settings
-from users.models import User
+from users.models import User, OfficeBranch
 
 from django.utils import timezone
 
@@ -8,20 +8,22 @@ from visit.serializers import (GETVisitSerializer, CreateVisitorVisitSerializer,
                                GETHostVisitSerializer, GETVisitorVisitSerializer,
                                UpdateVisitorVisitSerializer)
 from users.serializers import (UserSerializer, HostCreateSerializer,
-                               VisitorCreateSerializer)
+                               VisitorCreateSerializer, OfficeBranchSerializer)
 
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from rest_framework.permissions import (AllowAny, IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly)
 from api.permissions import (IsVisitHost, IsVisitVisitor,
                              IsHostMixin, IsManagementMixin)
 
 from api.mailing import send_host_email, send_visitor_checkout_email
 
 HOST_REPR = settings.HOST_REPR
+
+
+class CreateOfficeBranchAPIView(LoginRequiredMixin, IsManagementMixin, CreateAPIView):
+    serializer_class = OfficeBranchSerializer
 
 
 class ListHostsAPIView(LoginRequiredMixin, IsManagementMixin, ListAPIView):
@@ -57,7 +59,7 @@ class CreateVisitAPIView(CreateAPIView):
         send_host_email(serializer, visitor)
 
 
-class CheckoutVisitAPIView(UpdateAPIView):
+class CheckoutVisitAPIView(LoginRequiredMixin, UpdateAPIView):
     serializer_class = UpdateVisitorVisitSerializer
     permission_classes = (IsVisitVisitor,)
 

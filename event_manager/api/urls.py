@@ -1,7 +1,8 @@
 from api.views import (ListHostsAPIView, ListVisitorsAPIView,
                        CreateHostAPIView, CreateVisitorAPIView,
                        CreateVisitAPIView, CheckoutVisitAPIView,
-                       HostVisitsAPIView, VisitorVisitsAPIView)
+                       HostVisitsAPIView, VisitorVisitsAPIView,
+                       CreateOfficeBranchAPIView)
 
 from django.urls import path
 
@@ -19,4 +20,6 @@ urlpatterns = [
 
     path('visits/host/', HostVisitsAPIView.as_view(), name='user_host_visits_list'),
     path('visits/visitor/', VisitorVisitsAPIView.as_view(), name='user_visitor_visits_list'),
+
+    path('office/branch/new/', CreateOfficeBranchAPIView.as_view(), name='new_office_branch')
 ]
