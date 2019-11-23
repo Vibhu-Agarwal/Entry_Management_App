@@ -1,5 +1,6 @@
 from mail_templated import send_mail
 from users.models import User
+from visit.models import Visit
 from visit.serializers import CreateVisitorVisitSerializer
 from django.conf import settings
 
@@ -27,3 +28,7 @@ def send_host_email(visit_serializer: CreateVisitorVisitSerializer, visitor: Use
                   'visitor_data': visitor_data,
               },
               from_email=settings.EMAIL_HOST, recipient_list=host_email)
+
+
+def send_visitor_checkout_email(visit_instance: Visit):
+    pass

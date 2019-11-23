@@ -1,6 +1,6 @@
 from api.views import (ListHostsAPIView, ListVisitorsAPIView,
                        CreateHostAPIView, CreateVisitorAPIView,
-                       CreateVisitAPIView,
+                       CreateVisitAPIView, CheckoutVisitAPIView,
                        HostVisitsAPIView, VisitorVisitsAPIView)
 
 from django.urls import path
@@ -15,6 +15,7 @@ urlpatterns = [
     path('visitors/new/', CreateVisitorAPIView.as_view(), name='create_visitor'),
 
     path('visit/new/', CreateVisitAPIView.as_view(), name='create_visit'),
+    path('visit/checkout/<int:pk>/', CheckoutVisitAPIView.as_view(), name='checkout_visit'),
 
     path('visits/host/', HostVisitsAPIView.as_view(), name='user_host_visits_list'),
     path('visits/visitor/', VisitorVisitsAPIView.as_view(), name='user_visitor_visits_list'),

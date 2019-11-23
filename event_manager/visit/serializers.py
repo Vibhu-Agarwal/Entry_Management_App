@@ -39,6 +39,13 @@ class CreateVisitorVisitSerializer(VisitorVisitSerializer):
         exclude = ('visitor', 'out_time')
 
 
+class UpdateVisitorVisitSerializer(VisitorVisitSerializer):
+
+    class Meta:
+        model = Visit
+        fields = ()
+
+
 class GETVisitorVisitSerializer(VisitorVisitSerializer):
 
     host = UserSerializer(read_only=True)

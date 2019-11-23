@@ -3,6 +3,8 @@ from django.db import models
 from users.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from rest_framework.exceptions import APIException
+
 HOST_REPR = settings.HOST_REPR
 
 
@@ -32,5 +34,8 @@ class Visit(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        self.clean()
+        try:
+            self.clean()
+        except ValidationError as e:
+            raise APIException(str(e))
         super(Visit, self).save()
