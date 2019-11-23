@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'visit',
     'management',
     'api',
-    'mail_templated'
+    'mail_templated',
+    'widget_tweaks',
+    'betterforms',
 ]
 
 MIDDLEWARE = [

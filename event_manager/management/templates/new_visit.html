@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--<script src="jquery-3.4.1.min.js"></script>-->
+    <title>New Visit</title>
+</head>
+    
+<body>
+    {% load widget_tweaks %}
+    <form>
+        {% csrf_token %}
+        
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+        {% endfor %}
+        
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% for field in form.visible_fields %}
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}
+            </label>
+            <div>
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        {% render_field field class="form-control is-invalid" %}
+                        {% for error in field.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% render_field field class="form-control is-valid" %}
+                    {% endif %}
+                {% else %}
+                    {% render_field field class="form-control" %}
+                {% endif %}
+
+                {% if field.help_text %}
+                    <small class="form-text text-muted">
+                        {{ field.help_text }}
+                    </small>
+                {% endif %}
+            </div>
+            {% comment %}
+            <div>
+                {% if field.name == 'user_email'%}
+                    <button id="id_check_email">Check Email</button>
+                {% endif %}
+            </div>
+            {% endcomment %}
+        {% endfor %}
+    </form>
+    
+    <script>
+        document.getElementById("id_visitor-email").addEventListener("change",function(event){
+            
+            event.preventDefault();
+            
+            var user_email = $("#id_visitor-email").val();
+            $.ajax({
+                url: "{% url 'api:ajax_user_detail' %}?email_id="+user_email,
+                data: {},
+                success: function(data){
+                    var first_name = data.first_name;
+                    var last_name = "";
+                    var phone_number = data.phone_number;
+                    if(data.last_name){
+                        last_name = data.last_name;
+                    }
+                    $("#id_visitor-first_name").val(first_name).attr('readonly', 'readonly');
+                    $("#id_visitor-last_name").val(last_name).attr('readonly', 'readonly');
+                    $("#id_visitor-phone_number").val(phone_number).attr('readonly', 'readonly');
+                },
+                error: function(data){
+                    $("#id_visitor-first_name").val("").removeAttr('readonly');
+                    $("#id_visitor-last_name").val("").removeAttr('readonly');
+                    $("#id_visitor-phone_number").val("").removeAttr('readonly');
+                }
+            })
+        });
+    </script>
+</body>
+</html>
