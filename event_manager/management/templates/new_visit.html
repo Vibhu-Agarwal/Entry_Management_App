@@ -9,7 +9,7 @@
     
 <body>
     {% load widget_tweaks %}
-    <form>
+    <form method="post">
         {% csrf_token %}
         
         {% for hidden_field in form.hidden_fields %}
@@ -58,6 +58,9 @@
             </div>
             {% endcomment %}
         {% endfor %}
+        
+
+        <input type="submit" value="Gogogo!" />
     </form>
     
     <script>
