@@ -20,6 +20,11 @@ class LoggedOutRequiredMixin(UserPassesTestMixin):
         return not self.request.user.is_authenticated
 
 
+class IsHostOrLoggedOutMixin(UserPassesTestMixin):
+    def test_func(self):
+        return (not self.request.user.is_authenticated) or (self.request.user.user_type == HOST_REPR)
+
+
 class IsVisitHost(BasePermission):
 
     def has_object_permission(self, request, view, obj):

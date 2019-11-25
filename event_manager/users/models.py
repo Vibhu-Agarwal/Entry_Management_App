@@ -88,7 +88,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         user_representation = self.first_name
-        if self.last_name is not None:
+        if self.last_name:
             user_representation += f" {self.last_name}"
         return user_representation
 
