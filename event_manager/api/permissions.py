@@ -17,7 +17,7 @@ class IsManagementMixin(UserPassesTestMixin):
 
 class LoggedOutRequiredMixin(UserPassesTestMixin):
     def test_func(self):
-        return not self.request.user.is_authenticated()
+        return not self.request.user.is_authenticated
 
 
 class IsVisitHost(BasePermission):
