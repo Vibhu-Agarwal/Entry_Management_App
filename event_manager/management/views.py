@@ -4,15 +4,25 @@ from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from api.permissions import IsHostOrLoggedOutMixin
 from django.views.generic import TemplateView
+from django.contrib.auth import authenticate, login
 from management.forms import VisitVisitorModelForm, VisitorModelForm, VisitModelForm
 from django.views.generic.edit import FormView
 
 HOST_REPR = settings.HOST_REPR
 
 
+class MeView(TemplateView):
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = str(self.request.user)
+        return context
+
+
 class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
     template_name = 'new_visit.html'
-    success_url = '/'
+    success_url = '/me'
     employee_sign_in_page = '/sign-in/'
 
     def get_user(self):
@@ -31,12 +41,14 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
 
     def form_valid(self, form):
         if self.request.user.is_authenticated:
+            # Employee (Host)
             visit_data = form.cleaned_data
             visit_data['visitor'] = self.get_user()
 
             # Calling API
             print(visit_data)
         else:
+            # New Visitor
             visit_and_visitor_cleaned_data = form.cleaned_data
 
             visit_details = visit_and_visitor_cleaned_data['visit']
@@ -63,7 +75,7 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
                 for visitor_email_error in visitor_email_errors:
                     if old_user_error != visitor_email_error:
                         visitor_form.add_error('email', visitor_email_error)
-                length_visitor_email_errors = len(visitor_email_errors)
+                length_visitor_email_errors = len(visitor_form_errors.get('email', None))
 
                 if length_visitor_email_errors == 0:
                     visitor_form._errors.pop('email')
@@ -71,9 +83,13 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
                     visitor = User.objects.get(email=visitor_email)
                     if visitor.user_type == 'visitor':
                         # Old Visitor
-                        pass
+                        user = User.objects.get(email=visitor_email)
+                        login(self.request, user)
+                        return super(NewVisitAndVisitorView, self).form_valid(form)
                     elif visitor.user_type == HOST_REPR:
+                        # Visitor is an office employee
                         return HttpResponseRedirect(self.employee_sign_in_page)
                     else:
+                        # Visitor is someone from management
                         raise PermissionDenied()
         return super(NewVisitAndVisitorView, self).form_invalid(form)

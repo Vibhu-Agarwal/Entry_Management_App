@@ -118,6 +118,9 @@ DEFAULT_OFFICE_ADDRESS = {
 
 ALLOW_EMAILS = False
 
+# AUTHENTICATION_BACKENDS = ('users.auth_backend.PasswordlessAuthBackend',
+#                            'django.contrib.auth.backends.ModelBackend',)
+
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
