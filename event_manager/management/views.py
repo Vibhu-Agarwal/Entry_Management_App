@@ -89,10 +89,18 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
                     visitor = User.objects.get(email=visitor_email)
                     if visitor.user_type == 'visitor':
                         # Old Visitor
-                        user = User.objects.get(email=visitor_email)
-                        login(self.request, user)
+                        visit_data = form.cleaned_data['visit']
+                        visit_data['visitor'] = visitor.id
+                        visit_data['host'] = visit_data['host'].id
+                        visit_serializer = VisitSerializer(data=visit_data)
 
-                        # Calling API
+                        if visit_serializer.is_valid():
+                            visit = visit_serializer.save()
+                            login(self.request, visit.visitor)
+                        else:
+                            # Do something
+                            pass
+
                         return super(NewVisitAndVisitorView, self).form_valid(form)
                     elif visitor.user_type == HOST_REPR:
                         # Visitor is an office employee
