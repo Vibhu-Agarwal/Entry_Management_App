@@ -1,6 +1,6 @@
 from api.views import (ListHostsAPIView, ListVisitorsAPIView,
                        CreateHostAPIView, CreateVisitorAPIView,
-                       CreateVisitAPIView, CheckoutVisitAPIView,
+                       CreateHostVisitAPIView, CheckoutVisitAPIView,
                        HostVisitsAPIView, VisitorVisitsAPIView,
                        CreateVisitAndVisitorAPIView,
                        CreateOfficeBranchAPIView,
@@ -17,7 +17,7 @@ urlpatterns = [
     path('visitors/', ListVisitorsAPIView.as_view(), name='visitors_list'),
     path('visitors/new/', CreateVisitorAPIView.as_view(), name='create_visitor'),
 
-    # path('visit/new/', CreateVisitAPIView.as_view(), name='create_visit'),
+    path('visit/new/host/', CreateHostVisitAPIView.as_view(), name='create_host_visit'),
     path('visit/new/', CreateVisitAndVisitorAPIView.as_view(), name='create_visit'),
     path('visit/checkout/<int:pk>/', CheckoutVisitAPIView.as_view(), name='checkout_visit'),
 

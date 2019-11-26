@@ -1,15 +1,14 @@
 from mail_templated import send_mail
-from users.models import User
 from visit.models import Visit
-from visit.serializers import CreateVisitorVisitSerializer
 from django.conf import settings
 
 
-def send_host_email(visit_serializer: CreateVisitorVisitSerializer, visitor: User):
-    visit_data = visit_serializer.validated_data
-    in_time = visit_data['in_time']
-    purpose = visit_data.get('purpose')
-    host_email = [visit_data['host'].email]
+def send_host_email(visit_instance: Visit):
+    visitor = visit_instance.visitor
+    host = visit_instance.host
+    in_time = visit_instance.in_time
+    purpose = visit_instance.purpose
+    host_email = [host.email]
     visitor_name = str(visitor)
     visitor_email = visitor.email
     visitor_phone = visitor.phone_number

@@ -1,7 +1,11 @@
 from django import forms
-from visit.models import Visit
 from users.models import User
+from visit.models import Visit
+from django.conf import settings
+from django.forms import ValidationError
 from betterforms.multiform import MultiModelForm
+
+HOST_REPR = settings.HOST_REPR
 
 
 class VisitModelForm(forms.ModelForm):

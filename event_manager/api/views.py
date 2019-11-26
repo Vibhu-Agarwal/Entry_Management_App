@@ -5,8 +5,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 
 from rest_framework.serializers import BaseSerializer
-from api.serializers import VisitAndVisitorSerializer
-from visit.serializers import (GETVisitSerializer, CreateVisitorVisitSerializer,
+from visit.serializers import (VisitAndVisitorSerializer, CreateHostVisitSerializer,
                                GETHostVisitSerializer, GETVisitorVisitSerializer,
                                UpdateVisitorVisitSerializer)
 from users.serializers import (UserSerializer, HostCreateSerializer,
@@ -18,10 +17,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from api.permissions import (IsVisitHost, IsVisitVisitor, LoggedOutRequiredMixin,
+from users.permissions import (IsVisitHost, IsVisitVisitor, LoggedOutRequiredMixin,
                              IsHostMixin, IsManagementMixin)
-
-from api.mailing import send_host_email, send_visitor_checkout_email
 
 HOST_REPR = settings.HOST_REPR
 
@@ -54,21 +51,16 @@ class CreateVisitorAPIView(CreateAPIView):
         serializer.save(user_type='visitor')
 
 
-class CreateVisitAPIView(LoginRequiredMixin, CreateAPIView):
-    serializer_class = CreateVisitorVisitSerializer
+class CreateHostVisitAPIView(LoginRequiredMixin, IsHostMixin, CreateAPIView):
+    serializer_class = CreateHostVisitSerializer
 
-    def perform_create(self, serializer: CreateVisitorVisitSerializer):
+    def perform_create(self, serializer):
         visitor = self.request.user
         serializer.save(visitor=visitor)
-        if settings.ALLOW_EMAILS:
-            send_host_email(serializer, visitor)
 
 
 class CreateVisitAndVisitorAPIView(LoggedOutRequiredMixin, CreateAPIView):
     serializer_class = VisitAndVisitorSerializer
-
-    def perform_create(self, serializer):
-        serializer.save()
 
 
 class CheckoutVisitAPIView(LoginRequiredMixin, UpdateAPIView):
@@ -90,10 +82,7 @@ class CheckoutVisitAPIView(LoginRequiredMixin, UpdateAPIView):
         return self.patch(request, *args, **kwargs)
 
     def perform_update(self, serializer):
-        visit_instance = self.get_object()
         serializer.save(out_time=timezone.now())
-        if settings.ALLOW_EMAILS:
-            send_visitor_checkout_email(visit_instance)
 
 
 class HostVisitsAPIView(LoginRequiredMixin, IsHostMixin, ListAPIView):

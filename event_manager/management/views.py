@@ -1,8 +1,9 @@
 from users.models import User
 from django.conf import settings
+from visit.serializers import VisitSerializer, VisitAndVisitorSerializer
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
-from api.permissions import IsHostOrLoggedOutMixin
+from users.permissions import IsHostOrLoggedOutMixin
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login
 from management.forms import VisitVisitorModelForm, VisitorModelForm, VisitModelForm
@@ -43,19 +44,24 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
         if self.request.user.is_authenticated:
             # Employee (Host)
             visit_data = form.cleaned_data
-            visit_data['visitor'] = self.get_user()
-
-            # Calling API
-            print(visit_data)
+            visit_data['visitor'] = self.get_user().id
+            visit_data['host'] = visit_data['host'].id
+            visit_serializer = VisitSerializer(data=visit_data)
         else:
             # New Visitor
             visit_and_visitor_cleaned_data = form.cleaned_data
 
             visit_details = visit_and_visitor_cleaned_data['visit']
+            visit_details['host'] = visit_details['host'].id
             visit_details['visitor'] = visit_and_visitor_cleaned_data['visitor']
+            visit_serializer = VisitAndVisitorSerializer(data=visit_details)
 
-            # Calling API
-            print(visit_details)
+        if visit_serializer.is_valid():
+            visit = visit_serializer.save()
+            login(self.request, visit.visitor)
+        else:
+            # Do something
+            pass
 
         return super(NewVisitAndVisitorView, self).form_valid(form)
 
@@ -85,6 +91,8 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
                         # Old Visitor
                         user = User.objects.get(email=visitor_email)
                         login(self.request, user)
+
+                        # Calling API
                         return super(NewVisitAndVisitorView, self).form_valid(form)
                     elif visitor.user_type == HOST_REPR:
                         # Visitor is an office employee
