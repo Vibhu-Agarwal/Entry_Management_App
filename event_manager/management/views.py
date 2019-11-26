@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 from users.permissions import IsHostOrLoggedOutMixin
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login
-from management.forms import VisitVisitorModelForm, VisitorModelForm, VisitModelForm
+from management.forms import VisitVisitorModelForm, VisitModelForm
 from django.views.generic.edit import FormView
 
 HOST_REPR = settings.HOST_REPR
@@ -107,3 +107,8 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
                         # Visitor is someone from management
                         raise PermissionDenied()
         return super(NewVisitAndVisitorView, self).form_invalid(form)
+
+
+class CheckOutView(FormView):
+    template_name = 'check_out.html'
+    success_url = '/me'
