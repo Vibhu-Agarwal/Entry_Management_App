@@ -67,6 +67,7 @@
         document.getElementById("id_visitor-email").addEventListener("change",function(event){
             
             var user_email = $("#id_visitor-email").val();
+            user_email = $.trim(user_email);
             $.ajax({
                 url: "{% url 'api:ajax_user_detail' %}?email_id="+user_email,
                 data: {},
