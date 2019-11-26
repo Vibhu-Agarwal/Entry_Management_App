@@ -32,14 +32,6 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
             kwargs.update({'request_user': self.request.user})
         return kwargs
 
-    def get_user(self):
-        user = self.request.user
-        if hasattr(user, '_wrapped') and hasattr(user, '_setup'):
-            if user._wrapped.__class__ == object:
-                user._setup()
-            user = user._wrapped
-        return user
-
     def get_form_class(self):
         if self.request.user.is_authenticated:
             return VisitModelForm
@@ -50,7 +42,7 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
         if self.request.user.is_authenticated:
             # Employee (Host)
             visit_data = form.cleaned_data
-            visit_data['visitor'] = self.get_user().id
+            visit_data['visitor'] = self.request.user.id
             visit_data['host'] = visit_data['host'].id
             visit_serializer = VisitSerializer(data=visit_data)
         else:
