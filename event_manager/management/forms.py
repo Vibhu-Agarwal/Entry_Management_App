@@ -13,6 +13,17 @@ class VisitModelForm(forms.ModelForm):
         model = Visit
         fields = ['in_time', 'purpose', 'host']
 
+    def __init__(self, *args, **kwargs):
+        if 'request_user' in kwargs:
+            self.request_user = kwargs.pop('request_user')
+        else:
+            self.request_user = None
+
+        super(VisitModelForm, self).__init__(*args, **kwargs)
+
+        if self.request_user and self.request_user.is_authenticated and self.request_user.user_type == HOST_REPR:
+            self.fields['host'].queryset = self.fields['host'].queryset.exclude(id=self.request_user.id)
+
 
 class VisitorModelForm(forms.ModelForm):
     class Meta:

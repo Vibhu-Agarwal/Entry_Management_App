@@ -26,6 +26,12 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
     success_url = '/me'
     employee_sign_in_page = '/sign-in/'
 
+    def get_form_kwargs(self):
+        kwargs = super(NewVisitAndVisitorView, self).get_form_kwargs()
+        if self.request.user.is_authenticated:
+            kwargs.update({'request_user': self.request.user})
+        return kwargs
+
     def get_user(self):
         user = self.request.user
         if hasattr(user, '_wrapped') and hasattr(user, '_setup'):
