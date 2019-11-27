@@ -7,5 +7,5 @@ class ManagementTokenAuth(models.Model):
                                 limit_choices_to={'user_type': 'management'},
                                 on_delete=models.CASCADE)
     host_email = models.EmailField(unique=True)
-    token_given = models.CharField(max_length=100, unique=True)
+    token_given = models.CharField(max_length=100)
     token_used = models.BooleanField(default=False)

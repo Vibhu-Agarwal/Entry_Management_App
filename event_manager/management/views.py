@@ -150,6 +150,13 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
     def form_valid(self, form):
         manager = self.request.user
         host_email = form.cleaned_data['host_email']
+        users_with_provided_email = User.objects.filter(email=host_email)
+        if users_with_provided_email.exists():
+            user_with_provided_email = users_with_provided_email.first()
+            if users_with_provided_email.user_type == 'visitor':
+                # Work, if want to convert Visitor to Host
+                pass
+            return HttpResponse("User Already Created", status=406)
         while True:
             generated_token = token_urlsafe()
             hashed_token = hashpw(generated_token.encode('utf8'), gensalt())
@@ -165,11 +172,13 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
         }
         management_token_auth_ser = ManagementTokenAuthSerializer(data=management_token_auth_data)
         if management_token_auth_ser.is_valid():
-            management_token_auth_ser.save()
             if settings.ALLOW_EMAILS:
+                management_token_auth_ser.save()
                 signup_absolute_url = self.request.build_absolute_uri(self.host_sign_up_url)
                 registration_form_link = f"{signup_absolute_url}?em_token_email={host_email}&em_token={generated_token}"
                 send_host_signup_email(host_email, registration_form_link)
+            else:
+                return HttpResponse("Emails not Allowed", status=503)
         else:
             # Do Something
             pass
