@@ -78,8 +78,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'event_manager.wsgi.application'
 AUTH_USER_MODEL = 'users.User'
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/me'
+LOGOUT_REDIRECT_URL = '/me'
 
 
 # Database
@@ -116,7 +116,7 @@ DEFAULT_OFFICE_ADDRESS = {
     'country': EM_DEFAULT_COMPANY_COUNTRY
 }
 
-ALLOW_EMAILS = True
+ALLOW_EMAILS = False
 
 # AUTHENTICATION_BACKENDS = ('users.auth_backend.PasswordlessAuthBackend',
 #                            'django.contrib.auth.backends.ModelBackend',)

@@ -168,7 +168,7 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
             management_token_auth_ser.save()
             if settings.ALLOW_EMAILS:
                 signup_absolute_url = self.request.build_absolute_uri(self.host_sign_up_url)
-                registration_form_link = f"{signup_absolute_url}?token={generated_token}"
+                registration_form_link = f"{signup_absolute_url}?em_token_email={host_email}&em_token={generated_token}"
                 send_host_signup_email(host_email, registration_form_link)
         else:
             # Do Something
