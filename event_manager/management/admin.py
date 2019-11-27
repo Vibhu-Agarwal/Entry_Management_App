@@ -1,3 +1,4 @@
 from django.contrib import admin
+from management.models import ManagementTokenAuth
 
-# Register your models here.
+admin.site.register(ManagementTokenAuth)

@@ -1,15 +1,21 @@
 from users.models import User
 from visit.models import Visit
+from management.models import ManagementTokenAuth
+from bcrypt import gensalt, hashpw
+from secrets import token_urlsafe
 from django.conf import settings
 from django.utils import timezone
-from visit.serializers import VisitSerializer, VisitAndVisitorSerializer, UpdateVisitorVisitSerializer
+from management.serializers import ManagementTokenAuthSerializer
+from visit.serializers import (VisitSerializer, VisitAndVisitorSerializer,
+                               UpdateVisitorVisitSerializer)
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
-from users.permissions import IsHostOrLoggedOutMixin
+from users.permissions import IsHostOrLoggedOutMixin, IsManagementMixin
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login
-from management.forms import VisitVisitorModelForm, VisitModelForm
+from management.forms import (VisitVisitorModelForm, VisitModelForm,
+                              ManagementTokenAuthForm)
 from django.views.generic.edit import FormView
 from django.shortcuts import render, get_object_or_404
 
@@ -131,3 +137,34 @@ class CheckOutView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         return render(self.request, self.template_name, self.get_context_data())
+
+
+class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
+    template_name = 'management/new_host.html'
+    success_url = '/me'
+    form_class = ManagementTokenAuthForm
+    host_sign_up_url = '/host/signup'
+
+    def form_valid(self, form):
+        manager = self.request.user
+        host_email = form.cleaned_data['host_email']
+        while True:
+            generated_token = token_urlsafe()
+            hashed_token = hashpw(generated_token.encode('utf8'), gensalt())
+            dup_token_auths = ManagementTokenAuth.objects.filter(token_given=hashed_token)
+            if not dup_token_auths.exists():
+                break
+            elif dup_token_auths.filter(token_used=True).exists():
+                break
+        management_token_auth_data = {
+            'manager': manager.id,
+            'host_email': host_email,
+            'token_given': hashed_token.decode()
+        }
+        management_token_auth_ser = ManagementTokenAuthSerializer(data=management_token_auth_data)
+        if management_token_auth_ser.is_valid():
+            management_token_auth_ser.save()
+        else:
+            # Do Something
+            pass
+        return super(ManagementTokenAuthView, self).form_valid(form)

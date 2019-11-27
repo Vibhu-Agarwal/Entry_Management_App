@@ -1,11 +1,18 @@
 from django import forms
 from users.models import User
 from visit.models import Visit
+from management.models import ManagementTokenAuth
 from django.conf import settings
 from django.forms import ValidationError
 from betterforms.multiform import MultiModelForm
 
 HOST_REPR = settings.HOST_REPR
+
+
+class ManagementTokenAuthForm(forms.ModelForm):
+    class Meta:
+        model = ManagementTokenAuth
+        fields = ['host_email']
 
 
 class VisitModelForm(forms.ModelForm):
