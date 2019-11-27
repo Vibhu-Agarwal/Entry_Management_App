@@ -5,6 +5,9 @@
     <title>Checkout</title>
 </head>
 <body>
-
+    <form>
+        {% csrf_token %}
+        <button type="submit" formmethod="post">Checkout</button>
+    </form>
 </body>
 </html>

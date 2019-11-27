@@ -1,13 +1,17 @@
 from users.models import User
+from visit.models import Visit
 from django.conf import settings
-from visit.serializers import VisitSerializer, VisitAndVisitorSerializer
-from django.http import HttpResponseRedirect
+from django.utils import timezone
+from visit.serializers import VisitSerializer, VisitAndVisitorSerializer, UpdateVisitorVisitSerializer
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.mixins import LoginRequiredMixin
 from users.permissions import IsHostOrLoggedOutMixin
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login
 from management.forms import VisitVisitorModelForm, VisitModelForm
 from django.views.generic.edit import FormView
+from django.shortcuts import render, get_object_or_404
 
 HOST_REPR = settings.HOST_REPR
 
@@ -109,6 +113,21 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
         return super(NewVisitAndVisitorView, self).form_invalid(form)
 
 
-class CheckOutView(FormView):
+class CheckOutView(LoginRequiredMixin, TemplateView):
     template_name = 'check_out.html'
     success_url = '/me'
+
+    def post(self, request, *args, **kwargs):
+        logged_in_user = self.request.user
+        visit_id = self.kwargs['visit_id']
+        visit = get_object_or_404(Visit, id=visit_id)
+        if logged_in_user in (visit.visitor, visit.host):
+            serializer = UpdateVisitorVisitSerializer(visit, data={}, partial=True)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save(out_time=timezone.now())
+            return HttpResponseRedirect(self.success_url)
+        else:
+            raise PermissionDenied()
+
+    def get(self, request, *args, **kwargs):
+        return render(self.request, self.template_name, self.get_context_data())
