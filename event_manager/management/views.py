@@ -18,6 +18,7 @@ from management.forms import (VisitVisitorModelForm, VisitModelForm,
                               ManagementTokenAuthForm)
 from django.views.generic.edit import FormView
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 from management.mailing import send_host_signup_email
 
 HOST_REPR = settings.HOST_REPR
@@ -144,7 +145,7 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
     template_name = 'management/new_host.html'
     success_url = '/me'
     form_class = ManagementTokenAuthForm
-    host_sign_up_url = '/host/signup'
+    host_sign_up_url = reverse_lazy('users:host_signup')
 
     def form_valid(self, form):
         manager = self.request.user
