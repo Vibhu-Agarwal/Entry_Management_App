@@ -18,6 +18,7 @@ from management.forms import (VisitVisitorModelForm, VisitModelForm,
                               ManagementTokenAuthForm)
 from django.views.generic.edit import FormView
 from django.shortcuts import render, get_object_or_404
+from management.mailing import send_host_signup_email
 
 HOST_REPR = settings.HOST_REPR
 
@@ -164,6 +165,10 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
         management_token_auth_ser = ManagementTokenAuthSerializer(data=management_token_auth_data)
         if management_token_auth_ser.is_valid():
             management_token_auth_ser.save()
+            if settings.ALLOW_EMAILS:
+                signup_absolute_url = self.request.build_absolute_uri(self.host_sign_up_url)
+                registration_form_link = f"{signup_absolute_url}?token={generated_token}"
+                send_host_signup_email(host_email, registration_form_link)
         else:
             # Do Something
             pass

@@ -3,7 +3,16 @@ from visit.models import Visit
 from django.conf import settings
 
 
-def send_host_email(visit_instance: Visit):
+def send_host_signup_email(host_email, signup_form_link):
+    send_mail(template_name='mailing/host_sign_up_mail.html',
+              context={
+                  'email_subject': 'Host | Registration Link',
+                  'form_link': signup_form_link,
+              },
+              from_email=settings.EMAIL_HOST, recipient_list=[host_email])
+
+
+def send_host_checkin_email(visit_instance: Visit):
     visitor = visit_instance.visitor
     host = visit_instance.host
     in_time = visit_instance.in_time
@@ -22,7 +31,7 @@ def send_host_email(visit_instance: Visit):
     }
     if purpose:
         visitor_data['Purpose'] = purpose
-    send_mail(template_name='host_email.html',
+    send_mail(template_name='mailing/host_checkin_email.html',
               context={
                   'email_subject': email_subject,
                   'visitor_data': visitor_data,
@@ -45,7 +54,7 @@ def send_visitor_checkout_email(visit_instance: Visit):
     }
     if visit_instance.purpose:
         visit_data['Purpose'] = visit_instance.purpose
-    send_mail(template_name='visitor_checkout_email.html',
+    send_mail(template_name='mailing/visitor_checkout_email.html',
               context={
                   'email_subject': email_subject,
                   'visit_data': visit_data

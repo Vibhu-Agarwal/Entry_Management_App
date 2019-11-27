@@ -1,0 +1,12 @@
+{% extends "mail_templated/base.tpl" %}
+
+{% block subject %}
+{{email_subject}}
+{% endblock %}
+
+{% block html %}
+<center>
+    <h3>SignUp</h3>
+</center>
+{{form_link}}
+{% endblock %}

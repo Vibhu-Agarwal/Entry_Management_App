@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.conf import settings
 from visit.models import Visit
 from users.models import User
-from management.mailing import send_host_email, send_visitor_checkout_email
+from management.mailing import send_host_checkin_email, send_visitor_checkout_email
 
 
 class VisitSerializer(serializers.ModelSerializer):
@@ -21,7 +21,7 @@ class VisitSerializer(serializers.ModelSerializer):
 
         if settings.ALLOW_EMAILS:
             if check_in_mail:
-                send_host_email(visit_instance)
+                send_host_checkin_email(visit_instance)
             else:
                 send_visitor_checkout_email(visit_instance)
 
