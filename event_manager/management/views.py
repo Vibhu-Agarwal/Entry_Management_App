@@ -24,13 +24,13 @@ from management.mailing import send_host_signup_email
 HOST_REPR = settings.HOST_REPR
 
 
-class MeView(TemplateView):
+class HomeView(TemplateView):
     template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = str(self.request.user)
-        return context
+        context_data = super(HomeView, self).get_context_data(**kwargs)
+        context_data['page_title'] = 'Home'
+        return context_data
 
 
 class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
