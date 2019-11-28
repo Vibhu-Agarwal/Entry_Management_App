@@ -31,6 +31,8 @@ class VisitModelForm(forms.ModelForm):
 
         if self.request_user and self.request_user.is_authenticated and self.request_user.user_type == HOST_REPR:
             self.fields['host'].queryset = self.fields['host'].queryset.exclude(id=self.request_user.id)
+        else:
+            self.request_user = None
 
     def clean(self):
         cleaned_data = super().clean()
