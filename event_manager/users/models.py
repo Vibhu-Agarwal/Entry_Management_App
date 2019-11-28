@@ -1,5 +1,6 @@
 from .managers import CustomUserManager
 from django.conf import settings
+from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from rest_framework.exceptions import APIException
@@ -142,3 +143,25 @@ class User(AbstractBaseUser, PermissionsMixin):
                         available, msg = False, "Checked-In"
                         break
         return available, msg
+
+    @property
+    def get_current_visitor_visit(self):
+        now = timezone.now()
+        visitor_visits = self.visitor_visits.all().filter(in_time__lte=now).order_by('-in_time')
+        if visitor_visits.exists():
+            last_visitor_visit = visitor_visits.first()
+            if last_visitor_visit.out_time:
+                if last_visitor_visit.out_time > now:
+                    return last_visitor_visit
+            else:
+                return last_visitor_visit
+        return None
+
+    @property
+    def is_checkout_available(self):
+        if not self.is_authenticated:
+            return False
+        visit = self.get_current_visitor_visit
+        if visit is None:
+            return False
+        return True

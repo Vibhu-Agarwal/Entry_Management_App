@@ -5,9 +5,9 @@
 
              {% if user.is_authenticated %}
 
-                 {% comment %}
+                {% if user.is_checkout_available %}
                  <li class="nav_li"><a href="{% url "management:checkout_visit" %}">Checkout Visit</a></li>
-                 {% endcomment %}
+                {% endif %}
 
 
                  {% if user.user_type == "management" %}

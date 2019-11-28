@@ -134,8 +134,9 @@ class CheckOutView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         logged_in_user = self.request.user
-        visit_id = self.kwargs['visit_id']
-        visit = get_object_or_404(Visit, id=visit_id)
+        visit = logged_in_user.get_current_visitor_visit
+        if not visit:
+            return HttpResponse("No Visit to Check-out", status=422)
         if logged_in_user in (visit.visitor, visit.host):
             serializer = UpdateVisitorVisitSerializer(visit, data={}, partial=True)
             if serializer.is_valid(raise_exception=True):
@@ -146,6 +147,10 @@ class CheckOutView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context_data = super(CheckOutView, self).get_context_data(**kwargs)
+        logged_in_user = self.request.user
+        visit = logged_in_user.get_current_visitor_visit
+        if visit is not None:
+            context_data['visit_data'] = visit
         context_data['page_title'] = 'Visit Checkout'
         return context_data
 
