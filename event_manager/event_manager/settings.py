@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -167,3 +168,11 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+if not ALLOW_EMAILS:
+    raise ImproperlyConfigured("ALLOW_EMAILS is unset")
+if not EMAIL_HOST_USER:
+    raise ImproperlyConfigured("'EM_EMAIL_HOST_USER' environment variable is unset")
+if not EMAIL_HOST_PASSWORD:
+    raise ImproperlyConfigured("'EM_EMAIL_HOST_PASSWORD' environment variable is unset")
