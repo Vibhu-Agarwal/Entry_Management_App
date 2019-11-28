@@ -1,0 +1,28 @@
+
+    <div class="nav_div">
+         <ul class="nav_ul">
+             <li class="nav_li"><a href="{% url "management:home_page" %}">Home</a></li>
+
+             {% if user.is_authenticated %}
+
+                 {% comment %}
+                 <li class="nav_li"><a href="{% url "management:checkout_visit" %}">Checkout Visit</a></li>
+                 {% endcomment %}
+
+
+                 {% if user.user_type == "management" %}
+                 <li class="nav_li"><a href="{% url "management:management_new_host" %}">New Host</a></li>
+                 {% endif %}
+
+                 <li class="nav_li"><a href="{% url "logout" %}">Logout</a></li>
+
+
+             {% else %}
+
+                 <li class="nav_li"><a href="{% url "management:new_visit" %}">New Visit</a></li>
+                 <li class="nav_li"><a href="{% url "login" %}">Log In</a></li>
+
+             {% endif %}
+
+        </ul> 
+    </div>

@@ -1,6 +1,7 @@
 from bcrypt import checkpw
 from django.conf import settings
 from users.forms import HostSignUpForm
+from django.urls import reverse_lazy
 from management.models import ManagementTokenAuth
 from django.views.generic.edit import FormView
 from django.contrib.auth import login, authenticate
@@ -12,7 +13,7 @@ HOST_REPR = settings.HOST_REPR
 
 class HostSignUpView(LoggedOutRequiredMixin, FormView):
     template_name = 'host_sign_up.html'
-    success_url = '/me'
+    success_url = reverse_lazy('management:home_page')
     form_class = HostSignUpForm
 
     def verified_em_token(self, management_token, token_host_email):

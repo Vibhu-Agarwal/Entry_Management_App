@@ -35,7 +35,7 @@ class MeView(TemplateView):
 
 class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
     template_name = 'new_visit.html'
-    success_url = '/me'
+    success_url = reverse_lazy('management:home_page')
     host_sign_in_url = reverse_lazy('login')
 
     def get_form_kwargs(self):
@@ -130,7 +130,7 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
 
 class CheckOutView(LoginRequiredMixin, TemplateView):
     template_name = 'check_out.html'
-    success_url = '/me'
+    success_url = reverse_lazy('management:home_page')
 
     def post(self, request, *args, **kwargs):
         logged_in_user = self.request.user
@@ -152,7 +152,7 @@ class CheckOutView(LoginRequiredMixin, TemplateView):
 
 class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
     template_name = 'management/new_host.html'
-    success_url = '/me'
+    success_url = reverse_lazy('management:home_page')
     form_class = ManagementTokenAuthForm
     host_sign_up_url = reverse_lazy('users:host_signup')
 

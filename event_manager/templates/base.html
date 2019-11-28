@@ -6,10 +6,12 @@
         <title>{{page_title}}</title>
         <link rel="stylesheet" type="text/css" href="{% static 'css/docs.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/em_nav.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/entry_management.css' %}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
     <body>
+        {% include "nav_bar.html" %}
         <div class="main_center_div">
             {% block mcd_content %}
             {% endblock %}
