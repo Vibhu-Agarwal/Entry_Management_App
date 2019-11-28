@@ -3,7 +3,6 @@ from users.models import User
 from visit.models import Visit
 from management.models import ManagementTokenAuth
 from django.conf import settings
-from django.forms import ValidationError
 from betterforms.multiform import MultiModelForm
 
 HOST_REPR = settings.HOST_REPR
@@ -30,6 +29,15 @@ class VisitModelForm(forms.ModelForm):
 
         if self.request_user and self.request_user.is_authenticated and self.request_user.user_type == HOST_REPR:
             self.fields['host'].queryset = self.fields['host'].queryset.exclude(id=self.request_user.id)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        requested_in_time = cleaned_data['in_time']
+        requested_host_user = cleaned_data['host']
+        available, msg = requested_host_user.slot_status(requested_in_time)
+        if not available:
+            error_string = f"Host is {msg}"
+            self.add_error('in_time', error_string)
 
 
 class VisitorModelForm(forms.ModelForm):

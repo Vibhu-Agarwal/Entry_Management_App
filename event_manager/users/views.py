@@ -35,6 +35,7 @@ class HostSignUpView(LoggedOutRequiredMixin, FormView):
             context_data = super().get_context_data(**kwargs)
             context_data['em_token_value'] = management_token
             context_data['em_token_email_value'] = token_host_email
+            context_data['page_title'] = 'Host | Sign-Up'
             return context_data
         else:
             raise PermissionDenied()
