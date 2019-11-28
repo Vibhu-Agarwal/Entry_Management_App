@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Checkout</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block mcd_content %}
+    {% load widget_tweaks %}
     <form>
         {% csrf_token %}
         <button type="submit" formmethod="post">Checkout</button>
     </form>
-</body>
-</html>
+{% endblock %}

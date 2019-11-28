@@ -122,6 +122,11 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
                         raise PermissionDenied()
         return super(NewVisitAndVisitorView, self).form_invalid(form)
 
+    def get_context_data(self, **kwargs):
+        context_data = super(NewVisitAndVisitorView, self).get_context_data(**kwargs)
+        context_data['page_title'] = 'Visitor | New Visit'
+        return context_data
+
 
 class CheckOutView(LoginRequiredMixin, TemplateView):
     template_name = 'check_out.html'
@@ -139,8 +144,10 @@ class CheckOutView(LoginRequiredMixin, TemplateView):
         else:
             raise PermissionDenied()
 
-    def get(self, request, *args, **kwargs):
-        return render(self.request, self.template_name, self.get_context_data())
+    def get_context_data(self, **kwargs):
+        context_data = super(CheckOutView, self).get_context_data(**kwargs)
+        context_data['page_title'] = 'Visit Checkout'
+        return context_data
 
 
 class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
@@ -185,3 +192,8 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
             # Do Something
             pass
         return super(ManagementTokenAuthView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context_data = super(ManagementTokenAuthView, self).get_context_data(**kwargs)
+        context_data['page_title'] = 'Manager | Create New Host'
+        return context_data

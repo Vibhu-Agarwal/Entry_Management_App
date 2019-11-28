@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Host | Sign-Up</title>
-    </head>
-    <body>
-        {% load widget_tweaks %}
-        {% block content %}
+{% extends "base.html" %}
+
+{% block mcd_content %}
+    {% load widget_tweaks %}
           <h2>Sign up</h2>
           <form method="post">
             {% csrf_token %}
@@ -54,6 +49,4 @@
             {% endfor %}
             <button type="submit">Sign up</button>
           </form>
-        {% endblock %}
-    </body>
-</html>
+{% endblock %}

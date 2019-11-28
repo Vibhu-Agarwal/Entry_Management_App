@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>New Host</title>
-    </head>
-    <body>
+{% extends "base.html" %}
+
+{% block mcd_content %}
+    {% load widget_tweaks %}
         <form method="post">
           {% csrf_token %}
           {{ form.as_p }}
           <button type="submit">Create New Host</button>
         </form>
-    </body>
-</html>
+{% endblock %}

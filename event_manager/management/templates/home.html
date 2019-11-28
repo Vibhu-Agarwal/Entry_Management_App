@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Me</title>
-</head>
-<body>
-<h1>{{ user }}</h1>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block mcd_content %}
+    {% load widget_tweaks %}
+    {{user}}
+{% endblock %}
