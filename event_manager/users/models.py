@@ -109,7 +109,24 @@ class User(AbstractBaseUser, PermissionsMixin):
             raise APIException(str(e))
         super(User, self).save()
 
-    def slot_status(self, requested_in_time):
+    def host_slot_status(self, requested_in_time):
+        available, msg = True, "Available"
+        if settings.SINGLE_VISITOR:
+            host_visits = self.host_visits.all()
+            visitor_visits = self.visitor_visits.all()
+            all_visits = host_visits.union(visitor_visits)
+            for visit in all_visits:
+                if visit.in_time < requested_in_time:
+                    if visit.out_time:
+                        if visit.out_time > requested_in_time:
+                            available, msg = False, "Unavailable"
+                            break
+                    else:
+                        available, msg = False, "Checked-In"
+                        break
+        return available, msg
+
+    def visitor_slot_status(self, requested_in_time):
         available, msg = True, "Available"
         if settings.SINGLE_VISITOR:
             host_visits = self.host_visits.all()
