@@ -50,7 +50,7 @@ def send_visitor_checkout_email(visit_instance: Visit):
         'Phone': host.phone_number,
         'Check-In Time': visit_instance.in_time,
         'Check-Out Time': visit_instance.out_time,
-        'Address': 'To be addressed :p'
+        'Address': str(host.office_branch),
     }
     if visit_instance.purpose:
         visit_data['Purpose'] = visit_instance.purpose

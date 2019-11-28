@@ -36,7 +36,7 @@ class MeView(TemplateView):
 class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
     template_name = 'new_visit.html'
     success_url = '/me'
-    employee_sign_in_page = '/sign-in/'
+    host_sign_in_url = reverse_lazy('login')
 
     def get_form_kwargs(self):
         kwargs = super(NewVisitAndVisitorView, self).get_form_kwargs()
@@ -114,7 +114,9 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
                         return super(NewVisitAndVisitorView, self).form_valid(form)
                     elif visitor.user_type == HOST_REPR:
                         # Visitor is an office employee
-                        return HttpResponseRedirect(self.employee_sign_in_page)
+                        new_visit_path = self.request.path
+                        sign_up_url = f"{str(self.host_sign_in_url)}?next={new_visit_path}"
+                        return HttpResponseRedirect(sign_up_url)
                     else:
                         # Visitor is someone from management
                         raise PermissionDenied()
@@ -153,7 +155,7 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
         users_with_provided_email = User.objects.filter(email=host_email)
         if users_with_provided_email.exists():
             user_with_provided_email = users_with_provided_email.first()
-            if users_with_provided_email.user_type == 'visitor':
+            if user_with_provided_email.user_type == 'visitor':
                 # Work, if want to convert Visitor to Host
                 pass
             return HttpResponse("User Already Created", status=406)
@@ -173,9 +175,9 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
         management_token_auth_ser = ManagementTokenAuthSerializer(data=management_token_auth_data)
         if management_token_auth_ser.is_valid():
             if settings.ALLOW_EMAILS:
-                management_token_auth_ser.save()
-                signup_absolute_url = self.request.build_absolute_uri(self.host_sign_up_url)
+                signup_absolute_url = self.request.build_absolute_uri(str(self.host_sign_up_url))
                 registration_form_link = f"{signup_absolute_url}?em_token_email={host_email}&em_token={generated_token}"
+                management_token_auth_ser.save()
                 send_host_signup_email(host_email, registration_form_link)
             else:
                 return HttpResponse("Emails not Allowed", status=503)

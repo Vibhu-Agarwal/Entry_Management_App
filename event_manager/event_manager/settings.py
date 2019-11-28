@@ -116,7 +116,7 @@ DEFAULT_OFFICE_ADDRESS = {
     'country': EM_DEFAULT_COMPANY_COUNTRY
 }
 
-ALLOW_EMAILS = False
+ALLOW_EMAILS = True
 
 # AUTHENTICATION_BACKENDS = ('users.auth_backend.PasswordlessAuthBackend',
 #                            'django.contrib.auth.backends.ModelBackend',)

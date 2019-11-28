@@ -56,8 +56,9 @@ class HostSignUpView(LoggedOutRequiredMixin, FormView):
         email = form.cleaned_data.get('email')
         raw_password = form.cleaned_data.get('password1')
 
-        management_token_auth = ManagementTokenAuth.objects.first(email=email)
+        management_token_auth = ManagementTokenAuth.objects.get(host_email=email)
         management_token_auth.token_used = True
+        management_token_auth.save()
         user = authenticate(email=email, password=raw_password)
         login(self.request, user)
         return super(HostSignUpView, self).form_valid(form)
