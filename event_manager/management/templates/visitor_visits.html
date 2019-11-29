@@ -5,20 +5,12 @@
     <title>Visits | Visitor</title>
 </head>
 <body>
-<h2>Past Visits</h2>
-{% for visit in past_visits %}
+<h2>{{visits_header}}</h2>
+{% for visit in all_visits %}
 {{visit}}
 <br>
-{% empty %}}
-No Past Visits
-{% endfor %}
-
-<h2>Planned Visits</h2>
-{% for visit in planned_visits %}
-{{visit}}
-<br>
-{% empty %}}
-No Planned Visits
+{% empty %}
+No Visits
 {% endfor %}
 </body>
 </html>

@@ -40,9 +40,23 @@ class ListVisitorVisitsView(LoginRequiredMixin, TemplateView):
         logged_in_user = self.request.user
         past_visits, current_visitor_visit, planned_visits = logged_in_user.different_visitor_visits
         context_data['page_title'] = 'Visitor | New Visit'
-        context_data['past_visits'] = past_visits
-        context_data['current_visitor_visit'] = current_visitor_visit
-        context_data['planned_visits'] = planned_visits
+        visit_type = self.request.GET.get('visit_type', None)
+        if visit_type:
+            if visit_type == 'past':
+                context_data['visits_header'] = "Past Visits"
+                context_data['all_visits'] = past_visits
+            elif visit_type == 'ongoing':
+                context_data['visits_header'] = "Ongoing Visit"
+                context_data['all_visits'] = current_visitor_visit
+            elif visit_type == 'planned':
+                context_data['visits_header'] = "Planned Visits"
+                context_data['all_visits'] = planned_visits
+            else:
+                context_data['visits_header'] = "Visits"
+                context_data['all_visits'] = Visit.objects.none()
+        else:
+            context_data['visits_header'] = "All Visits"
+            context_data['all_visits'] = past_visits.union(planned_visits)
         return context_data
 
 
