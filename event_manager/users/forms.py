@@ -20,3 +20,9 @@ class HostSignUpForm(UserCreationForm):
         widgets = {'user_type': HiddenInput()}
 
 
+class VisitorModelForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'last_name', 'phone_number']
+
+

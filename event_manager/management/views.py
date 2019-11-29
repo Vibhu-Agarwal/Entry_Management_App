@@ -14,8 +14,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from users.permissions import IsHostOrLoggedOutMixin, IsManagementMixin
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login
-from management.forms import (VisitVisitorModelForm, VisitModelForm,
-                              ManagementTokenAuthForm)
+from visit.forms import VisitModelForm
+from management.forms import (VisitVisitorModelForm, ManagementTokenAuthForm)
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from management.mailing import send_host_signup_email
