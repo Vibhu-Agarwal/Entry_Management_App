@@ -189,8 +189,8 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
             if settings.ALLOW_EMAILS:
                 signup_absolute_url = self.request.build_absolute_uri(str(self.host_sign_up_url))
                 registration_form_link = f"{signup_absolute_url}?em_token_email={host_email}&em_token={generated_token}"
-                management_token_auth_ser.save()
                 send_host_signup_email(host_email, registration_form_link)
+                management_token_auth_ser.save()
             else:
                 return HttpResponse("Emails not Allowed", status=503)
         else:
