@@ -16,7 +16,15 @@ class ManagementTokenAuthForm(forms.ModelForm):
         fields = ['host_email']
 
 
+class XDSoftDateTimePickerInput(forms.DateTimeInput):
+    template_name = 'widgets/xdsoft_datetimepicker.html'
+
+
 class VisitModelForm(forms.ModelForm):
+
+    in_time = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'],
+                                  widget=XDSoftDateTimePickerInput())
+
     class Meta:
         model = Visit
         fields = ['in_time', 'purpose', 'host']
