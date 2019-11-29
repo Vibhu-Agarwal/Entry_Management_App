@@ -3,6 +3,7 @@ from users.models import User
 from visit.models import Visit
 from management.models import ManagementTokenAuth
 from django.conf import settings
+from django.utils import timezone
 from django.forms import ValidationError
 from django.utils.translation import gettext as _
 from betterforms.multiform import MultiModelForm
@@ -42,20 +43,27 @@ class VisitModelForm(forms.ModelForm):
         else:
             self.request_user = None
 
+    def clean_in_time(self):
+        cleaned_data = super().clean()
+        now = timezone.now()
+        if cleaned_data['in_time'] < now:
+            self.add_error('in_time', "You can't enter Check-in time in past")
+
     def clean(self):
         cleaned_data = super().clean()
-        requested_in_time = cleaned_data['in_time']
-        requested_host_user = cleaned_data['host']
-        available, msg = requested_host_user.host_slot_status(requested_in_time)
-        if not available:
-            error_string = f"Host is {msg}"
-            self.add_error('in_time', error_string)
-        employee_visitor = self.request_user
-        if employee_visitor:
-            available, msg = requested_host_user.visitor_slot_status(requested_in_time)
+        requested_in_time = cleaned_data.get('in_time', None)
+        requested_host_user = cleaned_data.get('host', None)
+        if None not in (requested_host_user, requested_in_time):
+            available, msg = requested_host_user.host_slot_status(requested_in_time)
             if not available:
-                error_string = f"You are {msg}"
-                raise ValidationError(_(error_string), code="invalid")
+                error_string = f"Host is {msg}"
+                self.add_error('in_time', error_string)
+            employee_visitor = self.request_user
+            if employee_visitor:
+                available, msg = requested_host_user.visitor_slot_status(requested_in_time)
+                if not available:
+                    error_string = f"You are {msg}"
+                    raise ValidationError(_(error_string), code="invalid")
 
 
 class VisitorModelForm(forms.ModelForm):
