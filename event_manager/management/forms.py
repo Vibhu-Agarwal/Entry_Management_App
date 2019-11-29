@@ -23,7 +23,7 @@ class XDSoftDateTimePickerInput(forms.DateTimeInput):
 
 class VisitModelForm(forms.ModelForm):
 
-    in_time = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'],
+    in_time = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M', '%Y-%m-%d %H:%M'],
                                   widget=XDSoftDateTimePickerInput())
 
     class Meta:
@@ -48,6 +48,8 @@ class VisitModelForm(forms.ModelForm):
         now = timezone.now()
         if cleaned_data['in_time'] < now:
             self.add_error('in_time', "You can't enter Check-in time in past")
+        else:
+            return self.cleaned_data['in_time']
 
     def clean(self):
         cleaned_data = super().clean()
