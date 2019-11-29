@@ -1,23 +1,32 @@
+# Models
 from users.models import User
 from visit.models import Visit
 from management.models import ManagementTokenAuth
-from bcrypt import gensalt, hashpw
-from secrets import token_urlsafe
-from django.conf import settings
-from django.utils import timezone
+# Serializers
 from management.serializers import ManagementTokenAuthSerializer
 from visit.serializers import (VisitSerializer, VisitAndVisitorSerializer,
                                UpdateVisitorVisitSerializer)
-from django.http import HttpResponseRedirect, HttpResponse
+# Hashers
+from bcrypt import gensalt, hashpw
+from secrets import token_urlsafe
+# django utilities
+from django.conf import settings
+from django.utils import timezone
+from django.urls import reverse_lazy
+from django.contrib.auth import authenticate, login
+# Responses and Exceptions
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect, HttpResponse
+# Permissions
 from django.contrib.auth.mixins import LoginRequiredMixin
 from users.permissions import IsHostOrLoggedOutMixin, IsManagementMixin
+# Views
 from django.views.generic import TemplateView
-from django.contrib.auth import authenticate, login
+from django.views.generic.edit import FormView
+# Forms
 from visit.forms import VisitModelForm
 from management.forms import (VisitVisitorModelForm, ManagementTokenAuthForm)
-from django.views.generic.edit import FormView
-from django.urls import reverse_lazy
+# Mailing
 from management.mailing import send_host_signup_email
 
 HOST_REPR = settings.HOST_REPR
