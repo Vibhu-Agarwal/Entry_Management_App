@@ -175,8 +175,8 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
         return context_data
 
 
-class CheckOutView(LoginRequiredMixin, TemplateView):
-    template_name = 'check_out.html'
+class OngoingVisitAndCheckOutView(LoginRequiredMixin, TemplateView):
+    template_name = 'ongoing_visit.html'
     success_url = reverse_lazy('management:home_page')
 
     def post(self, request, *args, **kwargs):
@@ -193,12 +193,22 @@ class CheckOutView(LoginRequiredMixin, TemplateView):
             raise PermissionDenied()
 
     def get_context_data(self, **kwargs):
-        context_data = super(CheckOutView, self).get_context_data(**kwargs)
+        context_data = super(OngoingVisitAndCheckOutView, self).get_context_data(**kwargs)
         logged_in_user = self.request.user
         visit = logged_in_user.get_current_visitor_visit
+        host = visit.host
         if visit is not None:
-            context_data['visit_data'] = visit
-        context_data['page_title'] = 'Visit Checkout'
+            visit_data = {
+                'Host': str(host),
+                'Email': host.email,
+                'Phone': host.phone_number,
+                'Check-In Time': visit.in_time,
+                'Address': str(host.office_branch),
+            }
+            if visit.purpose:
+                visit_data['Purpose'] = visit.purpose
+            context_data['visit_data'] = visit_data
+        context_data['page_title'] = 'Ongoing Visit'
         return context_data
 
 

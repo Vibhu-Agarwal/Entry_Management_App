@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block mcd_content %}
+    {% load widget_tweaks %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ongoing_visit.css' %}">
+
+    {% if visit_data %}
+        <h1>Ongoing Visit</h1>
+        <table class="ongoing-table">
+            {% for key, value in visit_data.items %}
+            <tr  class="ongoing-table-row">
+                <th class="ongoing-table-header">{{key}}</th>
+                <td class="ongoing-table-data">{{value}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form>
+            {% csrf_token %}
+            <button type="submit" formmethod="post">Checkout</button>
+        </form>
+    {% else %}
+        <h1>No Ongoing Visit</h1>
+    {% endif %}
+{% endblock %}

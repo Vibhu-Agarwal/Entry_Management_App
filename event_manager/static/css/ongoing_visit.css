@@ -1,0 +1,14 @@
+.ongoing-table, .ongoing-table-header, .ongoing-table-data { 
+    border: 2px solid #333; 
+    text-align:center; 
+} 
+.ongoing-table-header, .ongoing-table-data { 
+    padding: 20px; 
+    background-color:none; 
+}
+.ongoing-table-row:hover{
+    background: lightgrey;
+}
+.ongoing-table-header{
+    align-content: center
+}

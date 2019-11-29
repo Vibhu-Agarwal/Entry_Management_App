@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-
-{% block mcd_content %}
-    {% load widget_tweaks %}
-    <form>
-        {% csrf_token %}
-        <button type="submit" formmethod="post">Checkout</button>
-    </form>
-{% endblock %}
