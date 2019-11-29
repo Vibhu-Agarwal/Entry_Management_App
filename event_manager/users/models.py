@@ -110,30 +110,30 @@ class User(AbstractBaseUser, PermissionsMixin):
             raise APIException(str(e))
         super(User, self).save()
 
-    def host_slot_status(self, requested_in_time):
+    def host_slot_status(self, requested_in_time, requested_out_time=None):
         available, msg = True, "Available"
         if settings.SINGLE_VISITOR:
-            if self.get_current_host_visit:
+            host_visits = self.host_visits.all().filter(out_time__gt=requested_in_time)
+            if requested_out_time:
+                host_visits = host_visits.filter(in_time__lt=requested_out_time)
+            if host_visits.exists():
                 available, msg = False, "Checked-In"
-            elif self.get_current_visitor_visit:
-                available, msg = False, "Unavailable"
+            else:
+                visitor_visits = self.visitor_visits.all().filter(out_time__gt=requested_in_time)
+                if requested_out_time:
+                    visitor_visits = visitor_visits.filter(in_time__lt=requested_out_time)
+                if visitor_visits.exists():
+                    available, msg = False, "Un-available"
         return available, msg
 
-    def visitor_slot_status(self, requested_in_time):
+    def visitor_slot_status(self, requested_in_time, requested_out_time=None):
         available, msg = True, "Available"
         if settings.SINGLE_VISITOR:
-            host_visits = self.host_visits.all()
-            visitor_visits = self.visitor_visits.all()
-            all_visits = host_visits.union(visitor_visits)
-            for visit in all_visits:
-                if visit.in_time < requested_in_time:
-                    if visit.out_time:
-                        if visit.out_time > requested_in_time:
-                            available, msg = False, "Unavailable"
-                            break
-                    else:
-                        available, msg = False, "Checked-In"
-                        break
+            visitor_visits = self.visitor_visits.all().filter(out_time__gt=requested_in_time)
+            if requested_out_time:
+                visitor_visits = visitor_visits.filter(in_time__lt=requested_out_time)
+            if visitor_visits.exists():
+                available, msg = False, "Un-available"
         return available, msg
 
     @property

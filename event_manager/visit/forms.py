@@ -53,7 +53,7 @@ class VisitModelForm(forms.ModelForm):
                 self.add_error('in_time', error_string)
             employee_visitor = self.request_user
             if employee_visitor:
-                available, msg = requested_host_user.visitor_slot_status(requested_in_time)
+                available, msg = requested_host_user.host_slot_status(requested_in_time)
                 if not available:
                     error_string = f"You are {msg}"
                     raise ValidationError(_(error_string), code="invalid")
