@@ -63,7 +63,13 @@ class OfficeBranch(models.Model):
         verbose_name_plural = "Office Branches"
 
     def __str__(self):
-        return self.name
+        address_string = f"{self.name},"
+        address_string += f"\n{self.address1},"
+        if self.address2:
+            address_string += f"\n{self.address2},"
+        address_string += f"\n{self.city}-{self.zip_code},"
+        address_string += f"\n{self.country}."
+        return address_string
 
 
 class User(AbstractBaseUser, PermissionsMixin):
