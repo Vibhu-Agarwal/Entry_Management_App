@@ -113,18 +113,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def host_slot_status(self, requested_in_time):
         available, msg = True, "Available"
         if settings.SINGLE_VISITOR:
-            host_visits = self.host_visits.all()
-            visitor_visits = self.visitor_visits.all()
-            all_visits = host_visits.union(visitor_visits)
-            for visit in all_visits:
-                if visit.in_time < requested_in_time:
-                    if visit.out_time:
-                        if visit.out_time > requested_in_time:
-                            available, msg = False, "Unavailable"
-                            break
-                    else:
-                        available, msg = False, "Checked-In"
-                        break
+            if self.get_current_host_visit:
+                available, msg = False, "Checked-In"
+            elif self.get_current_visitor_visit:
+                available, msg = False, "Unavailable"
         return available, msg
 
     def visitor_slot_status(self, requested_in_time):
@@ -145,6 +137,19 @@ class User(AbstractBaseUser, PermissionsMixin):
         return available, msg
 
     @property
+    def get_current_host_visit(self):
+        now = timezone.now()
+        host_visits = self.host_visits.all().filter(in_time__lte=now).order_by('-in_time')
+        if host_visits.exists():
+            last_host_visit = host_visits.first()
+            if last_host_visit.out_time:
+                if last_host_visit.out_time > now:
+                    return last_host_visit
+            else:
+                return last_host_visit
+        return None
+
+    @property
     def get_current_visitor_visit(self):
         now = timezone.now()
         visitor_visits = self.visitor_visits.all().filter(in_time__lte=now).order_by('-in_time')
@@ -158,10 +163,21 @@ class User(AbstractBaseUser, PermissionsMixin):
         return None
 
     @property
-    def is_checkout_available(self):
+    def is_visit_ongoing(self):
         if not self.is_authenticated:
             return False
         visit = self.get_current_visitor_visit
         if visit is None:
             return False
         return True
+
+    @property
+    def different_visitor_visits(self):
+        now = timezone.now()
+        visitor_visits = self.visitor_visits.all()
+        current_visitor_visit = self.get_current_visitor_visit
+        if current_visitor_visit:
+            visitor_visits = visitor_visits.exclude(id=current_visitor_visit.id)
+        planned_visits = visitor_visits.filter(in_time__gt=now)
+        past_visits = visitor_visits.difference(planned_visits)
+        return past_visits, current_visitor_visit, planned_visits

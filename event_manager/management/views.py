@@ -17,7 +17,6 @@ from django.contrib.auth import authenticate, login
 from management.forms import (VisitVisitorModelForm, VisitModelForm,
                               ManagementTokenAuthForm)
 from django.views.generic.edit import FormView
-from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from management.mailing import send_host_signup_email
 
@@ -30,6 +29,20 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context_data = super(HomeView, self).get_context_data(**kwargs)
         context_data['page_title'] = 'Home'
+        return context_data
+
+
+class ListVisitorVisitsView(LoginRequiredMixin, TemplateView):
+    template_name = 'visitor_visits.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super(ListVisitorVisitsView, self).get_context_data(**kwargs)
+        logged_in_user = self.request.user
+        past_visits, current_visitor_visit, planned_visits = logged_in_user.different_visitor_visits
+        context_data['page_title'] = 'Visitor | New Visit'
+        context_data['past_visits'] = past_visits
+        context_data['current_visitor_visit'] = current_visitor_visit
+        context_data['planned_visits'] = planned_visits
         return context_data
 
 
@@ -76,7 +89,7 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
         return super(NewVisitAndVisitorView, self).form_valid(form)
 
     def form_invalid(self, form):
-
+        print('Cleaned Data', form.data, form.cleaned_data)
         visitor_form = form.forms['visitor']
         visitor_form_errors = visitor_form.errors
         visitor_email_errors = visitor_form_errors.get('email', None)
@@ -95,31 +108,33 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
 
                 if length_visitor_email_errors == 0:
                     visitor_form._errors.pop('email')
-                    visitor_email = form.data['visitor-email']
-                    visitor = User.objects.get(email=visitor_email)
-                    if visitor.user_type == 'visitor':
-                        # Old Visitor
-                        visit_data = form.cleaned_data['visit']
-                        visit_data['visitor'] = visitor.id
-                        visit_data['host'] = visit_data['host'].id
-                        visit_serializer = VisitSerializer(data=visit_data)
 
-                        if visit_serializer.is_valid():
-                            visit = visit_serializer.save()
-                            login(self.request, visit.visitor)
+                    if len(form.errors) == 0:
+                        visitor_email = form.data['visitor-email']
+                        visitor = User.objects.get(email=visitor_email)
+                        if visitor.user_type == 'visitor':
+                            # Old Visitor
+                            visit_data = form.cleaned_data['visit']
+                            visit_data['visitor'] = visitor.id
+                            visit_data['host'] = visit_data['host'].id
+                            visit_serializer = VisitSerializer(data=visit_data)
+
+                            if visit_serializer.is_valid():
+                                visit = visit_serializer.save()
+                                login(self.request, visit.visitor)
+                            else:
+                                # Do something
+                                pass
+
+                            return super(NewVisitAndVisitorView, self).form_valid(form)
+                        elif visitor.user_type == HOST_REPR:
+                            # Visitor is an office employee
+                            new_visit_path = self.request.path
+                            sign_up_url = f"{str(self.host_sign_in_url)}?next={new_visit_path}"
+                            return HttpResponseRedirect(sign_up_url)
                         else:
-                            # Do something
-                            pass
-
-                        return super(NewVisitAndVisitorView, self).form_valid(form)
-                    elif visitor.user_type == HOST_REPR:
-                        # Visitor is an office employee
-                        new_visit_path = self.request.path
-                        sign_up_url = f"{str(self.host_sign_in_url)}?next={new_visit_path}"
-                        return HttpResponseRedirect(sign_up_url)
-                    else:
-                        # Visitor is someone from management
-                        raise PermissionDenied()
+                            # Visitor is someone from management
+                            raise PermissionDenied()
         return super(NewVisitAndVisitorView, self).form_invalid(form)
 
     def get_context_data(self, **kwargs):

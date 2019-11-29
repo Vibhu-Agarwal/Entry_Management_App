@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visits | Visitor</title>
+</head>
+<body>
+<h2>Past Visits</h2>
+{% for visit in past_visits %}
+{{visit}}
+<br>
+{% empty %}}
+No Past Visits
+{% endfor %}
+
+<h2>Planned Visits</h2>
+{% for visit in planned_visits %}
+{{visit}}
+<br>
+{% empty %}}
+No Planned Visits
+{% endfor %}
+</body>
+</html>

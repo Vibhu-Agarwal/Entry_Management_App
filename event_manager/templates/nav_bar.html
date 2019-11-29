@@ -5,10 +5,11 @@
 
              {% if user.is_authenticated %}
 
-                {% if user.is_checkout_available %}
+                {% if user.is_visit_ongoing %}
                  <li class="nav_li"><a href="{% url "management:checkout_visit" %}">Checkout Visit</a></li>
                 {% endif %}
 
+                 <li class="nav_li"><a href="{% url "management:visitor_visits_list" %}">Visitor Visits</a></li>
 
                  {% if user.user_type == "management" %}
                  <li class="nav_li"><a href="{% url "management:management_new_host" %}">New Host</a></li>
