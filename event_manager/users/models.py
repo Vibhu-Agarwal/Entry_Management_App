@@ -163,13 +163,26 @@ class User(AbstractBaseUser, PermissionsMixin):
         return None
 
     @property
-    def is_visit_ongoing(self):
-        if not self.is_authenticated:
-            return False
+    def get_current_visit(self):
+        if self.user_type == HOST_REPR:
+            current_host_visit = self.get_current_host_visit
+            if current_host_visit is not None:
+                return current_host_visit
+        return self.get_current_visitor_visit
+
+    @property
+    def is_visit_as_visitor_ongoing(self):
         visit = self.get_current_visitor_visit
-        if visit is None:
-            return False
-        return True
+        if visit is not None:
+            return True
+        return False
+
+    @property
+    def is_visit_ongoing(self):
+        visit = self.get_current_visit
+        if visit is not None:
+            return True
+        return False
 
     @property
     def different_visitor_visits(self):

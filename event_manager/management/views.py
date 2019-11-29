@@ -181,7 +181,7 @@ class OngoingVisitAndCheckOutView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         logged_in_user = self.request.user
-        visit = logged_in_user.get_current_visitor_visit
+        visit = logged_in_user.get_current_visit
         if not visit:
             return HttpResponse("No Visit to Check-out", status=422)
         if logged_in_user in (visit.visitor, visit.host):
@@ -195,16 +195,25 @@ class OngoingVisitAndCheckOutView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context_data = super(OngoingVisitAndCheckOutView, self).get_context_data(**kwargs)
         logged_in_user = self.request.user
-        visit = logged_in_user.get_current_visitor_visit
-        host = visit.host
+        visit = logged_in_user.get_current_visit
         if visit is not None:
-            visit_data = {
-                'Host': str(host),
-                'Email': host.email,
-                'Phone': host.phone_number,
-                'Check-In Time': visit.in_time,
-                'Address': str(host.office_branch),
-            }
+            if logged_in_user.user_type == HOST_REPR:
+                visitor = visit.visitor
+                visit_data = {
+                    'Visitor': str(visitor),
+                    'Email': visitor.email,
+                    'Phone': visitor.phone_number,
+                    'Check-In Time': visit.in_time,
+                }
+            else:
+                host = visit.host
+                visit_data = {
+                    'Host': str(host),
+                    'Email': host.email,
+                    'Phone': host.phone_number,
+                    'Check-In Time': visit.in_time,
+                    'Address': str(host.office_branch),
+                }
             if visit.purpose:
                 visit_data['Purpose'] = visit.purpose
             context_data['visit_data'] = visit_data

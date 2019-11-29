@@ -2,11 +2,16 @@ from bcrypt import checkpw
 from django.conf import settings
 from users.forms import HostSignUpForm
 from django.urls import reverse_lazy
+from django.contrib.auth.views import LogoutView
 from management.models import ManagementTokenAuth
 from django.views.generic.edit import FormView
 from django.contrib.auth import login, authenticate
 from users.permissions import LoggedOutRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from visit.serializers import UpdateVisitorVisitSerializer
+from django.utils import timezone
 
 HOST_REPR = settings.HOST_REPR
 
@@ -64,3 +69,17 @@ class HostSignUpView(LoggedOutRequiredMixin, FormView):
         user = authenticate(email=email, password=raw_password)
         login(self.request, user)
         return super(HostSignUpView, self).form_valid(form)
+
+
+class CustomLogoutView(LogoutView):
+
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        logged_in_user = request.user
+        visitor_visit = logged_in_user.get_current_visitor_visit
+        if visitor_visit is not None:
+            serializer = UpdateVisitorVisitSerializer(visitor_visit, data={}, partial=True)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save(out_time=timezone.now())
+
+        return super(CustomLogoutView, self).dispatch(request, *args, **kwargs)

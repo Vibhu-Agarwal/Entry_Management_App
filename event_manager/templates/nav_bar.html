@@ -15,7 +15,15 @@
                  <li class="nav_li"><a href="{% url "management:management_new_host" %}">New Host</a></li>
                  {% endif %}
 
-                 <li class="nav_li"><a href="{% url "logout" %}">Logout</a></li>
+                 <li class="nav_li">
+                     <a href="{% url "users:logout" %}">
+                     {% if user.is_visit_as_visitor_ongoing %}
+                     Checkout and Logout
+                     {% else %}
+                     Logout
+                     {% endif %}
+                     </a>
+                 </li>
 
 
              {% else %}
