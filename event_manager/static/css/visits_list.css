@@ -1,0 +1,40 @@
+.filter{
+}
+.filter ul{
+    text-align: left;
+    margin-bottom: .8rem;
+}
+.filter ul li{
+    display: inline-block;
+    margin-right:-7px !important;
+    margin-left:0 !important;
+    margin-bottom:0 !important;
+}
+.filter ul li a:hover{
+    background-color: #D9D3C3;
+}
+.active-filter a{
+    background-color: #D9D3C3 !important;
+}
+.filter ul li a{
+    border-left:1px solid grey;
+    background-color: rgb(241, 219, 168);
+    padding:1rem 2rem;
+    font-size: 1.75rem;
+}
+
+.table-header{
+    background-color: black;
+    color:white;
+    font-size: 1.8rem;
+    align-content: center
+}
+.table-row{
+    font-size: 1.6rem;
+}
+.table-row:hover{
+    background: lightgrey;
+}
+th,tr{
+    text-align: center;
+}

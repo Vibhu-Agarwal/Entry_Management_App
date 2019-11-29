@@ -44,31 +44,37 @@ class HomeView(TemplateView):
 class ListVisitorVisitsView(LoginRequiredMixin, TemplateView):
     template_name = 'visitor_visits.html'
 
-    def get_context_data(self, **kwargs):
-        context_data = super(ListVisitorVisitsView, self).get_context_data(**kwargs)
-        logged_in_user = self.request.user
-        past_visits, current_visitor_visit, planned_visits = logged_in_user.different_visitor_visits
-        context_data['page_title'] = 'Visitor | Visits'
+    def get_visit_context_dict(self, past_visits, current_visit, planned_visits):
+        context_data = {}
         visit_type = self.request.GET.get('visit_type', None)
         if visit_type:
             if visit_type == 'past':
                 context_data['visits_header'] = "Past Visits"
-                context_data['all_visits'] = past_visits
+                context_data['all_visits'] = past_visits.order_by('-in_time')
             elif visit_type == 'ongoing':
                 context_data['visits_header'] = "Ongoing Visit"
-                if current_visitor_visit:
-                    context_data['all_visits'] = Visit.objects.filter(id=current_visitor_visit.id)
+                if current_visit:
+                    context_data['all_visits'] = Visit.objects.filter(id=current_visit.id)
                 else:
                     context_data['all_visits'] = Visit.objects.none()
             elif visit_type == 'planned':
                 context_data['visits_header'] = "Planned Visits"
-                context_data['all_visits'] = planned_visits
+                context_data['all_visits'] = planned_visits.order_by('in_time')
             else:
                 context_data['visits_header'] = "Visits"
                 context_data['all_visits'] = Visit.objects.none()
         else:
             context_data['visits_header'] = "All Visits"
-            context_data['all_visits'] = past_visits.union(planned_visits)
+            context_data['all_visits'] = past_visits.union(planned_visits).order_by('-in_time')
+        return context_data
+
+    def get_context_data(self, **kwargs):
+        context_data = super(ListVisitorVisitsView, self).get_context_data(**kwargs)
+        context_data['page_title'] = 'Visitor | Visits'
+        logged_in_user = self.request.user
+        past_visits, current_visitor_visit, planned_visits = logged_in_user.different_visitor_visits
+        visitor_visit_data = self.get_visit_context_dict(past_visits, current_visitor_visit, planned_visits)
+        context_data.update(visitor_visit_data)
         return context_data
 
 
