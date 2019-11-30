@@ -118,27 +118,37 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def host_slot_status(self, requested_in_time, requested_out_time=None):
         available, msg = True, "Available"
+        requested_in_date = requested_in_time.date()
         if settings.SINGLE_VISITOR:
-            host_visits = self.host_visits.all().filter(out_time__gt=requested_in_time)
+            host_visits = self.host_visits.all().filter(in_time__date=requested_in_date)
+
+            checked_out_host_visits = host_visits.filter(out_time__gt=requested_in_time)
+            only_checked_in_host_visits = host_visits.filter(out_time__isnull=True)
+
             if requested_out_time:
-                host_visits = host_visits.filter(in_time__lt=requested_out_time)
-            if host_visits.exists():
+                checked_out_host_visits = checked_out_host_visits.filter(in_time__lt=requested_out_time)
+                only_checked_in_host_visits = only_checked_in_host_visits.filter(in_time__lt=requested_out_time)
+
+            if checked_out_host_visits.exists() or only_checked_in_host_visits.exists():
                 available, msg = False, "Checked-In"
             else:
-                visitor_visits = self.visitor_visits.all().filter(out_time__gt=requested_in_time)
-                if requested_out_time:
-                    visitor_visits = visitor_visits.filter(in_time__lt=requested_out_time)
-                if visitor_visits.exists():
-                    available, msg = False, "Un-available"
+                available, msg = self.visitor_slot_status(requested_in_time, requested_out_time)
         return available, msg
 
     def visitor_slot_status(self, requested_in_time, requested_out_time=None):
         available, msg = True, "Available"
+        requested_in_date = requested_in_time.date()
         if settings.SINGLE_VISITOR:
-            visitor_visits = self.visitor_visits.all().filter(out_time__gt=requested_in_time)
+            visitor_visits = self.visitor_visits.all().filter(in_time__date=requested_in_date)
+
+            checked_out_visitor_visits = visitor_visits.filter(out_time__gt=requested_in_time)
+            only_checked_in_visitor_visits = visitor_visits.filter(out_time__isnull=True)
+
             if requested_out_time:
-                visitor_visits = visitor_visits.filter(in_time__lt=requested_out_time)
-            if visitor_visits.exists():
+                checked_out_visitor_visits = checked_out_visitor_visits.filter(in_time__lt=requested_out_time)
+                only_checked_in_visitor_visits = only_checked_in_visitor_visits.filter(in_time__lt=requested_out_time)
+
+            if checked_out_visitor_visits.exists() or only_checked_in_visitor_visits.exists():
                 available, msg = False, "Un-available"
         return available, msg
 
