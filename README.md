@@ -79,7 +79,57 @@ $ python manage.py runserver
 ## File Structure
 
 ```bash
-
+Entry_Management_App/
+├── event_manager
+│   ├── api
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── migrations
+│   │   ├── models.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── event_manager
+│   │   ├── settings.py
+│   │   └── urls.py
+│   ├── management
+│   │   ├── admin.py
+│   │   ├── forms.py
+│   │   ├── mailing.py
+│   │   ├── messaging.py
+│   │   ├── migrations
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── templates
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── manage.py
+│   ├── media
+│   │   └── static
+│   ├── set_env_vars
+│   ├── static
+│   │   └── css
+│   ├── templates
+│   ├── users
+│   │   ├── admin.py
+│   │   ├── forms.py
+│   │   ├── managers.py
+│   │   ├── migrations
+│   │   ├── models.py
+│   │   ├── permissions.py
+│   │   ├── serializers.py
+│   │   ├── templates
+│   │   ├── urls.py
+│   │   └── views.py
+│   └── visit
+│       ├── admin.py
+│       ├── forms.py
+│       ├── migrations
+│       ├── models.py
+│       ├── serializers.py
+│       └── views.py
+├── LICENSE
+├── README.md
+└── requirements.txt
 ```
 
 
