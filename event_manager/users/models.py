@@ -158,7 +158,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def get_current_host_visit(self):
         now = timezone.now()
-        host_visits = self.host_visits.all().filter(in_time__lte=now).order_by('-in_time')
+        now_date = now.date()
+        host_visits = self.host_visits.all().filter(in_time__date=now_date, in_time__lte=now).order_by('-in_time')
         if host_visits.exists():
             last_host_visit = host_visits.first()
             if last_host_visit.out_time:
@@ -171,7 +172,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def get_current_visitor_visit(self):
         now = timezone.now()
-        visitor_visits = self.visitor_visits.all().filter(in_time__lte=now).order_by('-in_time')
+        now_date = now.date()
+        visitor_visits = self.visitor_visits.all().filter(in_time__date=now_date, in_time__lte=now).order_by('-in_time')
         if visitor_visits.exists():
             last_visitor_visit = visitor_visits.first()
             if last_visitor_visit.out_time:
