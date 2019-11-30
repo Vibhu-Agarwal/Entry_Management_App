@@ -100,7 +100,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return user_representation
 
     def clean(self):
-        if self.user_type == HOST_REPR:
+        if self.is_host:
             if not self.office_branch:
                 raise ValidationError("Employees Must be associated with an Office Branch")
         elif self.user_type == 'visitor':
@@ -180,7 +180,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def get_current_visit(self):
-        if self.user_type == HOST_REPR:
+        if self.is_host:
             current_host_visit = self.get_current_host_visit
             if current_host_visit is not None:
                 return current_host_visit

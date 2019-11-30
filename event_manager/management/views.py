@@ -29,8 +29,6 @@ from management.forms import (VisitVisitorModelForm, ManagementTokenAuthForm)
 # Mailing
 from management.mailing import send_host_signup_email
 
-HOST_REPR = settings.HOST_REPR
-
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -158,7 +156,6 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
         return super(NewVisitAndVisitorView, self).form_valid(form)
 
     def form_invalid(self, form):
-        print('Cleaned Data', form.data, form.cleaned_data)
         visitor_form = form.forms['visitor']
         visitor_form_errors = visitor_form.errors
         visitor_email_errors = visitor_form_errors.get('email', None)
@@ -196,7 +193,7 @@ class NewVisitAndVisitorView(IsHostOrLoggedOutMixin, FormView):
                                 pass
 
                             return super(NewVisitAndVisitorView, self).form_valid(form)
-                        elif visitor.user_type == HOST_REPR:
+                        elif visitor.is_host:
                             # Visitor is an office employee
                             new_visit_path = self.request.path
                             sign_up_url = f"{str(self.host_sign_in_url)}?next={new_visit_path}"
@@ -234,7 +231,7 @@ class OngoingVisitAndCheckOutView(LoginRequiredMixin, TemplateView):
         logged_in_user = self.request.user
         visit = logged_in_user.get_current_visit
         if visit is not None:
-            if logged_in_user.user_type == HOST_REPR:
+            if logged_in_user.is_host:
                 visitor = visit.visitor
                 visit_data = {
                     'Visitor': str(visitor),

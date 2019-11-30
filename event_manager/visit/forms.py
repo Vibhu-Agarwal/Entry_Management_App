@@ -1,11 +1,8 @@
 from django import forms
 from visit.models import Visit
-from django.conf import settings
 from django.utils import timezone
 from django.forms import ValidationError
 from django.utils.translation import gettext as _
-
-HOST_REPR = settings.HOST_REPR
 
 
 class XDSoftDateTimePickerInput(forms.DateTimeInput):
@@ -29,7 +26,7 @@ class VisitModelForm(forms.ModelForm):
 
         super(VisitModelForm, self).__init__(*args, **kwargs)
 
-        if self.request_user and self.request_user.is_authenticated and self.request_user.user_type == HOST_REPR:
+        if self.request_user and self.request_user.is_authenticated and self.request_user.is_host:
             self.fields['host'].queryset = self.fields['host'].queryset.exclude(id=self.request_user.id)
         else:
             self.request_user = None

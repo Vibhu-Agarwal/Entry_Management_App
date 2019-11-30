@@ -29,7 +29,7 @@ class Visit(models.Model):
             raise APIException('Host cannot be the same as Visitor')
         if self.out_time and self.in_time >= self.out_time:
             raise APIException('Exit time must be greater than entry time')
-        if self.host.user_type != HOST_REPR:
+        if not self.host.is_host:
             raise APIException('Host must be an office employee')
         if (self.purpose is not None) and len(self.purpose) == 0:
             self.purpose = None
