@@ -103,6 +103,10 @@ EMAIL_USE_SSL = False
 EMAIL_HOST_USER = os.environ.get('EM_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EM_EMAIL_HOST_PASSWORD')
 
+TWILIO_ACCOUNT_SID = os.environ.get('EM_TWILIO_ACCOUNT_SID', None)
+TWILIO_AUTH_TOKEN = os.environ.get('EM_TWILIO_AUTH_TOKEN', None)
+TWILIO_NUMBER = os.environ.get('EM_TWILIO_NUMBER', None)
+
 EM_DEFAULT_COMPANY_NAME = os.environ.get('EM_DEFAULT_COMPANY_NAME', 'Holmes Home')
 EM_DEFAULT_COMPANY_ADD_1 = os.environ.get('EM_DEFAULT_COMPANY_ADD_1', '221B Baker Street')
 EM_DEFAULT_COMPANY_ADD_2 = os.environ.get('EM_DEFAULT_COMPANY_ADD_2', None)
@@ -120,6 +124,7 @@ DEFAULT_OFFICE_ADDRESS = {
 }
 
 ALLOW_EMAILS = True
+ALLOW_SMS = True
 
 # AUTHENTICATION_BACKENDS = ('users.auth_backend.PasswordlessAuthBackend',
 #                            'django.contrib.auth.backends.ModelBackend',)
@@ -176,3 +181,10 @@ if not EMAIL_HOST_USER:
     raise ImproperlyConfigured("'EM_EMAIL_HOST_USER' environment variable is unset")
 if not EMAIL_HOST_PASSWORD:
     raise ImproperlyConfigured("'EM_EMAIL_HOST_PASSWORD' environment variable is unset")
+if ALLOW_SMS:
+    if not TWILIO_ACCOUNT_SID:
+        raise ImproperlyConfigured("'EM_TWILIO_ACCOUNT_SID' environment variable is unset")
+    if not TWILIO_AUTH_TOKEN:
+        raise ImproperlyConfigured("'EM_TWILIO_AUTH_TOKEN' environment variable is unset")
+    if not TWILIO_NUMBER:
+        raise ImproperlyConfigured("'EM_TWILIO_NUMBER' environment variable is unset")

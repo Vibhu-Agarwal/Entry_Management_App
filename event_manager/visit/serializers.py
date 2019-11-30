@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.conf import settings
 from visit.models import Visit
 from users.models import User
+from management.messaging import send_host_checkin_sms
 from management.mailing import send_host_checkin_email, send_visitor_checkout_email
 
 
@@ -24,6 +25,9 @@ class VisitSerializer(serializers.ModelSerializer):
                 send_host_checkin_email(visit_instance)
             else:
                 send_visitor_checkout_email(visit_instance)
+        if settings.ALLOW_SMS:
+            if check_in_mail:
+                send_host_checkin_sms(visit_instance)
 
         return visit_instance
 
