@@ -49,7 +49,7 @@ $ cd event_manager
 - Get credentials and a trial number [Twilio](www.twilio.com/referral/vqcjRB).
 - Make sure 2FA is disabled on your mail account and [Less secure app access](https://myaccount.google.com/lesssecureapps) is turned on.
 
-- Edit the values of variables in the `.env` file and save the changes.
+- Edit the values of variables in the `set_env_vars` file and save the changes.
 ```bash
 export EM_EMAIL_HOST_USER="YOUR_(G)MAIL_ID"
 export EM_EMAIL_HOST_PASSWORD="YOUR_(G)MAIL_PASSWORD"
@@ -57,10 +57,10 @@ export EM_TWILIO_ACCOUNT_SID="YOUR_TWILIO_ACCOUNT_SID"
 export EM_TWILIO_AUTH_TOKEN="YOUR_TWILIO_ACCOUNT_AUTH_TOKEN"
 export EM_TWILIO_NUMBER="YOUR_TWILIO_SENDER_NUMBER"
 ```
-`NOTE: don't version control your .env file!`
+`NOTE: don't version control your set_env_vars file!`
 - After filling out the correct values of the variables, run this to export them.
 ```bash
-$ source .env
+$ source set_env_vars
 ```
 
 - Apply migrations and migrate them to your database.
