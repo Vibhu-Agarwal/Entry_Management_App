@@ -19,7 +19,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse
 # Permissions
 from django.contrib.auth.mixins import LoginRequiredMixin
-from users.permissions import IsHostOrLoggedOutMixin, IsManagementMixin
+from users.permissions import IsHostOrLoggedOutMixin, IsHostMixin, IsManagementMixin
 # Views
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
@@ -38,6 +38,43 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context_data = super(HomeView, self).get_context_data(**kwargs)
         context_data['page_title'] = 'Home'
+        return context_data
+
+
+class ListHostVisitsView(LoginRequiredMixin, IsHostMixin, TemplateView):
+    template_name = 'host_visits.html'
+
+    def get_visit_context_dict(self, past_visits, current_visit, planned_visits):
+        context_data = {}
+        visit_type = self.request.GET.get('visit_type', None)
+        if visit_type:
+            if visit_type == 'past':
+                context_data['visits_header'] = "Past Visits"
+                context_data['all_visits'] = past_visits.order_by('-in_time')
+            elif visit_type == 'ongoing':
+                context_data['visits_header'] = "Ongoing Visit"
+                if current_visit:
+                    context_data['all_visits'] = Visit.objects.filter(id=current_visit.id)
+                else:
+                    context_data['all_visits'] = Visit.objects.none()
+            elif visit_type == 'planned':
+                context_data['visits_header'] = "Planned Visits"
+                context_data['all_visits'] = planned_visits.order_by('in_time')
+            else:
+                context_data['visits_header'] = "Visits"
+                context_data['all_visits'] = Visit.objects.none()
+        else:
+            context_data['visits_header'] = "All Visits"
+            context_data['all_visits'] = past_visits.union(planned_visits).order_by('-in_time')
+        return context_data
+
+    def get_context_data(self, **kwargs):
+        context_data = super(ListHostVisitsView, self).get_context_data(**kwargs)
+        context_data['page_title'] = 'Host | Visits'
+        logged_in_user = self.request.user
+        past_visits, current_host_visit, planned_visits = logged_in_user.different_host_visits
+        host_visits_data = self.get_visit_context_dict(past_visits, current_host_visit, planned_visits)
+        context_data.update(host_visits_data)
         return context_data
 
 

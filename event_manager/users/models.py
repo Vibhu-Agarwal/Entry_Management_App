@@ -200,3 +200,18 @@ class User(AbstractBaseUser, PermissionsMixin):
         planned_visits = visitor_visits.filter(in_time__gt=now)
         past_visits = visitor_visits.difference(planned_visits)
         return past_visits, current_visitor_visit, planned_visits
+
+    @property
+    def different_host_visits(self):
+        now = timezone.now()
+        host_visits = self.host_visits.all()
+        current_host_visit = self.get_current_host_visit
+        if current_host_visit:
+            host_visits = host_visits.exclude(id=current_host_visit.id)
+        planned_visits = host_visits.filter(in_time__gt=now)
+        past_visits = host_visits.difference(planned_visits)
+        return past_visits, current_host_visit, planned_visits
+
+    @property
+    def is_host(self):
+        return self.user_type == HOST_REPR

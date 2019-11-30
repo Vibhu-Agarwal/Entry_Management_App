@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block mcd_content %}
+    {% load widget_tweaks %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/visits_list.css' %}">
+
+    <h2>{{visits_header}}</h2>
+    <div class="filter">
+        <ul>
+            <li>
+                <a href="{% url 'management:host_visits_list' %}?visit_type=past">Past</a>
+            </li>
+            <li>
+                <a href="{% url 'management:host_visits_list' %}?visit_type=ongoing">Ongoing</a>
+            </li>
+            <li>
+                <a href="{% url 'management:host_visits_list' %}?visit_type=planned">Planned</a>
+            </li>
+        </ul>
+    </div>
+    {% if all_visits %}
+        <table class="table">
+
+            <tr class="table-header ">
+                <th>Visit Id</th>
+                <th>Visitor</th>
+                <th>Check-In Time</th>
+                <th>Check-Out Time</th>
+                <th>Purpose</th>
+            </tr>
+
+            {% for visit in all_visits %}
+                <tr class="table-row">
+                    <td> {{visit.id}} </td>
+                    <td> {{visit.visitor}} </td>
+                    <td> {{visit.in_time}} </td>
+                    <td>
+                    {% if visit.out_time %}
+                        {{visit.out_time}}
+                    {% else %}
+                        -
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if visit.purpose %}
+                        {{visit.purpose}}
+                    {% else %}
+                        -
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% block dashboard_base %}
+            {% endblock %}
+        </table>
+    {% else %}
+        No {{visits_header}}
+    {% endif %}
+{% endblock %}
