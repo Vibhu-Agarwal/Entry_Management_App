@@ -1,5 +1,7 @@
 bcrypt==3.1.7
+certifi==2019.11.28
 cffi==1.13.2
+chardet==3.0.4
 Django==2.2.7
 django-betterforms==1.2
 django-filter==2.2.0
@@ -7,10 +9,15 @@ django-mail-templated==2.6.5
 django-widget-tweaks==1.4.5
 djangorestframework==3.10.3
 djangorestframework-jwt==1.11.0
+djangorestframework-stubs==1.0.0
+idna==2.8
 Markdown==3.1.1
 Pillow==6.2.1
 pycparser==2.19
 PyJWT==1.7.1
 pytz==2019.3
+requests==2.22.0
 six==1.13.0
 sqlparse==0.3.0
+twilio==6.33.1
+urllib3==1.25.7
