@@ -17,6 +17,12 @@ Check-in Time: {in_time}
 
 
 def send_host_checkin_sms(visit_instance: Visit):
+    """
+    Function to send an SMS to host on a Visit Check-in,
+    informing about details of the Visitor
+    :param visit_instance:  an instance of Visit, being checked-in
+    :return: None
+    """
     client = Client(account_sid, auth_token)
 
     visitor = visit_instance.visitor

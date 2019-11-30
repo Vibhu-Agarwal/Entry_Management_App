@@ -4,6 +4,13 @@ from django.conf import settings
 
 
 def send_host_signup_email(host_email, signup_form_link):
+    """
+    Function to send mail to a person, enabling them to sign-up for a Host role.
+
+    :param host_email: Email of person intended to be created host
+    :param signup_form_link: Full Unique Link for the intended user
+    :return: None
+    """
     send_mail(template_name='mailing/host_sign_up_mail.html',
               context={
                   'email_subject': 'Host | Registration Link',
@@ -13,6 +20,12 @@ def send_host_signup_email(host_email, signup_form_link):
 
 
 def send_host_checkin_email(visit_instance: Visit):
+    """
+    Function to send email to Host of a Visit on Check-In,
+    informing about the Visitor Details
+    :param visit_instance: an instance of Visit, being checked-in
+    :return: None
+    """
     visitor = visit_instance.visitor
     host = visit_instance.host
     in_time = visit_instance.in_time
@@ -40,6 +53,12 @@ def send_host_checkin_email(visit_instance: Visit):
 
 
 def send_visitor_checkout_email(visit_instance: Visit):
+    """
+    Function to send email to visitor of a Visit on Check-out,
+    informing about details of Visitor and Visit
+    :param visit_instance:  an instance of Visit, being checked-out
+    :return: None
+    """
     visitor = visit_instance.visitor
     host = visit_instance.host
     email_subject = f"Visit Details | {host}"
