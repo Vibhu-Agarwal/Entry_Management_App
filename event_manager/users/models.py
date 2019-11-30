@@ -1,4 +1,3 @@
-from .managers import CustomUserManager
 from django.conf import settings
 from django.utils import timezone
 from django.core.validators import RegexValidator
@@ -6,6 +5,7 @@ from django.core.exceptions import ValidationError
 from rest_framework.exceptions import APIException
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from users.managers import CustomUserManager
 
 from django.db import models
 
@@ -26,37 +26,16 @@ USER_TYPE = (
 
 
 class OfficeBranch(models.Model):
-    name = models.CharField(
-        _("Name"),
-        max_length=1024,
-        default=DEFAULT_OFFICE_ADDRESS['name']
-    )
-    address1 = models.CharField(
-        _("Address line 1"),
-        max_length=1024,
-        default=DEFAULT_OFFICE_ADDRESS['add1']
-    )
-    address2 = models.CharField(
-        _("Address line 2"),
-        max_length=1024,
-        default=DEFAULT_OFFICE_ADDRESS['add2'],
-        blank=True, null=True,
-    )
-    zip_code = models.CharField(
-        _("ZIP / Postal code"),
-        max_length=12,
-        default=DEFAULT_OFFICE_ADDRESS['zip']
-    )
-    city = models.CharField(
-        _("City"),
-        max_length=1024,
-        default=DEFAULT_OFFICE_ADDRESS['city']
-    )
-    country = models.CharField(
-        _("Country"),
-        max_length=1024,
-        default=DEFAULT_OFFICE_ADDRESS['country']
-    )
+    """
+    Model to store the details of Office Branch associated with the Employee
+    """
+    name = models.CharField(_("Name"), max_length=1024, default=DEFAULT_OFFICE_ADDRESS['name'])
+    address1 = models.CharField(_("Address line 1"), max_length=1024, default=DEFAULT_OFFICE_ADDRESS['add1'])
+    address2 = models.CharField(_("Address line 2"), max_length=1024, default=DEFAULT_OFFICE_ADDRESS['add2'],
+                                blank=True, null=True)
+    zip_code = models.CharField(_("ZIP / Postal code"), max_length=12, default=DEFAULT_OFFICE_ADDRESS['zip'])
+    city = models.CharField(_("City"), max_length=1024, default=DEFAULT_OFFICE_ADDRESS['city'])
+    country = models.CharField(_("Country"), max_length=1024, default=DEFAULT_OFFICE_ADDRESS['country'])
 
     class Meta:
         verbose_name = "Office Branch"
@@ -73,6 +52,10 @@ class OfficeBranch(models.Model):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """
+    Model to store all kinds of users in the database.
+    user_type field indicates if the type of user is a Visitor, an Employee(Host) or a Manager
+    """
     email = models.EmailField(_('email address'), unique=True)
     avatar = models.ImageField(upload_to='static', null=True, blank=True)
     first_name = models.CharField(_('first name'), max_length=30)
@@ -117,6 +100,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         super(User, self).save()
 
     def host_slot_status(self, requested_in_time, requested_out_time=None):
+        """
+        Function to check and return the availability of a user in the
+        requested time frame specified by the parameters of the function, decision
+        based on the list of visits, both as a Host participant and as a Visitor
+
+        :param requested_in_time: Starting point of the time frame
+        :param requested_out_time: Ending point of the time frame
+        :return: True if the person has a free slot in specified the time frame
+                 False, otherwise
+        """
         available, msg = True, "Available"
         requested_in_date = requested_in_time.date()
         if settings.SINGLE_VISITOR:
@@ -136,6 +129,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         return available, msg
 
     def visitor_slot_status(self, requested_in_time, requested_out_time=None):
+        """
+        Function to check and return the availability of a user in the
+        requested time frame specified by the parameters of the function, decision
+        based on the list of visits as a Visitor
+
+        :param requested_in_time: Starting point of the time frame
+        :param requested_out_time: Ending point of the time frame
+        :return: True if the person has a free slot in specified the time frame
+                 False, otherwise
+        """
         available, msg = True, "Available"
         requested_in_date = requested_in_time.date()
         if settings.SINGLE_VISITOR:

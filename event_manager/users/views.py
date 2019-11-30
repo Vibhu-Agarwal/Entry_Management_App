@@ -1,27 +1,53 @@
+# Hashsers
 from bcrypt import checkpw
+# django utilities
 from django.conf import settings
-from users.forms import HostSignUpForm
+from django.utils import timezone
 from django.urls import reverse_lazy
-from django.contrib.auth.views import LogoutView
-from management.models import ManagementTokenAuth
-from django.views.generic.edit import FormView
 from django.contrib.auth import login, authenticate
-from users.permissions import LoggedOutRequiredMixin
-from django.core.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
+# Forms
+from users.forms import HostSignUpForm
+# Views
+from django.views.generic.edit import FormView
+from django.contrib.auth.views import LogoutView
+# Models
+from management.models import ManagementTokenAuth
+# permissions
+from users.permissions import LoggedOutRequiredMixin
+# Responses and Exceptions
+from django.core.exceptions import PermissionDenied
+# Serializers
 from visit.serializers import UpdateVisitorVisitSerializer
-from django.utils import timezone
 
 HOST_REPR = settings.HOST_REPR
 
 
 class HostSignUpView(LoggedOutRequiredMixin, FormView):
+    """
+    View to handle the request made by a person, got on by accessing
+    unique Sign-Up URL sent by management.
+
+    Renders the form on GET request to enter the details and
+    Creates the host entry in the database on POST request.
+
+    It checks the authenticity of the token used in the URL by
+    extracting user email id on which the email was sent and comparing
+    the token provided hash value with the one in the database.
+    """
     template_name = 'host_sign_up.html'
     success_url = reverse_lazy('management:home_page')
     form_class = HostSignUpForm
 
     def verified_em_token(self, management_token, token_host_email):
+        """
+        Function to check authenticity of the token used in the URL
+        :param management_token: token being used in the URL
+        :param token_host_email: provided mail on which the mail must have
+                                    been sent to
+        :return: True if the token is valid, otherwise False
+        """
         if management_token and token_host_email:
             management_token_auths_with_email = ManagementTokenAuth.objects.filter(host_email=token_host_email)
             if management_token_auths_with_email.exists():
@@ -72,6 +98,12 @@ class HostSignUpView(LoggedOutRequiredMixin, FormView):
 
 
 class CustomLogoutView(LogoutView):
+    """
+    View to handle Log-out requests by users.
+
+    If the logged-in user is not an Office-Employee, logging out of the app
+    would also terminate the ongoing Visit session, if any.
+    """
 
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):

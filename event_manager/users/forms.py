@@ -8,6 +8,10 @@ HOST_REPR = settings.HOST_REPR
 
 
 class HostSignUpForm(UserCreationForm):
+    """
+    Form to handle the Sign-Up requests by the User,
+    who is offered to be a Host by the manager
+    """
 
     def __init__(self, *args, **kwargs):
         super(HostSignUpForm, self).__init__(*args, **kwargs)
@@ -22,6 +26,9 @@ class HostSignUpForm(UserCreationForm):
 
 
 class VisitorModelForm(forms.ModelForm):
+    """
+    Form specifying the fields to be taken for input while creating a new Visitor
+    """
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name', 'phone_number']
