@@ -63,11 +63,12 @@ export EM_TWILIO_NUMBER="YOUR_TWILIO_SENDER_NUMBER"
 $ source set_env_vars
 ```
 
-- Apply migrations and migrate them to your database.
+- Apply migrations and set up your initial database.
 
 ```bash
 $ python manage.py makemigrations
 $ python manage.py migrate
+$ python manage.py em_setup
 ```  
 
 - Finally run the application using 
