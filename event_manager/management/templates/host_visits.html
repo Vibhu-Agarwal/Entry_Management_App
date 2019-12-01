@@ -5,6 +5,8 @@
     {% load widget_tweaks %}
     {% load static %}
 
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/visits_list.css' %}"/>
 
     <!--===============================================================================================-->
         <link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico' %}"/>
@@ -22,6 +24,30 @@
     <!--===============================================================================================-->
 
     <h2>{{visits_header}}</h2>
+
+    <div class="three-btn-group">
+
+        <form id='switchform' method="get"></form>
+
+        <button class="three-btn" form="switchform"
+                formaction="{% url 'management:host_visits_list' %}?visit_type=past"
+                type="submit" value="Past">
+            Past
+        </button>
+
+        <button class="three-btn" form="switchform"
+                formaction="{% url 'management:host_visits_list' %}?visit_type=ongoing"
+                type="submit" value="Ongoing">
+            Ongoing
+        </button>
+
+        <button class="three-btn" form="switchform"
+                formaction="{% url 'management:host_visits_list' %}?visit_type=planned"
+                type="submit" value="Planned">
+            Planned
+        </button>
+    </div>
+
     <div class="filter">
         <ul>
             <li>

@@ -11,31 +11,25 @@
     margin-bottom:0 !important;
 }
 .filter ul li a:hover{
-    background-color: #D9D3C3;
+    background-color: var(--submit-hover-bg);
 }
 .active-filter a{
-    background-color: #D9D3C3 !important;
+    background-color: var(--submit-hover-bg) !important;
 }
 .filter ul li a{
     border-left:1px solid grey;
-    background-color: rgb(241, 219, 168);
-    padding:1rem 2rem;
-    font-size: 1.75rem;
+    background-color: var(--button-bg-color);
+    color: var(--button-txt-color);
+    padding:10px 20px;
+    font-size: 16px;
     text-decoration: None;
 }
 
-.table-header{
-    background-color: #333;
-    color:white;
-    font-size: 1.8rem;
-    align-content: center
+.three-btn-group{
+    width: 80%;
+    margin-left: 10%;
 }
-.table-row{
-    font-size: 1.6rem;
-}
-.table-row:hover{
-    background: lightgrey;
-}
-th,tr{
-    text-align: center;
+.three-btn {
+    background-color: var(--button-bg-color);
+    width: 32%;
 }
