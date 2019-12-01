@@ -17,7 +17,7 @@
   --button-bg-color: var(--accent-color);
   --button-txt-color: var(--light-text-color);
   --mcd-color: var(--dark-primary-color);
-  --submit-hover-bg: var(--hover-dark);
+  --submit-hover-bg: #a9a9a9;
 }
 
 body
