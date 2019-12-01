@@ -9,7 +9,6 @@ django-mail-templated==2.6.5
 django-widget-tweaks==1.4.5
 djangorestframework==3.10.3
 djangorestframework-jwt==1.11.0
-djangorestframework-stubs==1.0.0
 idna==2.8
 Markdown==3.1.1
 Pillow==6.2.1

@@ -3,8 +3,23 @@
 {% block mcd_content %}
 <div class="main_center_div">
     {% load widget_tweaks %}
-    {% if user.is_authenticated %}
-        <h2>{{user}}</h2>
-    {% endif %}
+    <div>
+        {% if user.is_authenticated %}
+            <h2>Welcome {{user}}!</h2>
+            {% if user.is_host %}
+                You can make a new Visit or attend to a Visitor.
+                View your visits in which you participated as a Host under Host Visits
+                and the ones in which you made a visit to another host under Visitor Visits.
+            {% elif user.user_type == "management" %}
+                You can create new hosts by sending them Sign-Up URL links to their mail
+                or you can create new office branches established to be chosen by the Hosts.
+                If you want to pay a Visit to a host, you can use your original mail on New Visit page.
+            {% endif %}
+        {% else %}
+            Welcome!
+            If you want to make a new visit, proceed to New Visit.
+            If you're a Manager or a Host, you can log-in and perform your actions.
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
