@@ -84,7 +84,8 @@ export EM_TWILIO_ACCOUNT_SID="YOUR_TWILIO_ACCOUNT_SID"
 export EM_TWILIO_AUTH_TOKEN="YOUR_TWILIO_ACCOUNT_AUTH_TOKEN"
 export EM_TWILIO_NUMBER="YOUR_TWILIO_SENDER_NUMBER"
 ```
-`NOTE: don't version control your set_env_vars file!`
+**NOTE**: If you wish to skip creating TWILIO credentials, set **`ALLOW_SMS`** in **[settings.py](https://github.com/Vibhu-Agarwal/Entry_Management_App/blob/3d050028cca591a5c9f8e2dee71d2fdb02e5ea30/event_manager/event_manager/settings.py#L127)** to **`False`**!
+`
 - After filling out the correct values of the variables, run this to export them.
 ```bash
 $ source set_env_vars
