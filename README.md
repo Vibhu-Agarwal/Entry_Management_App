@@ -1,7 +1,7 @@
 
 
 <p align="center">
-  <img src="./logo/logo.png" width="160">
+  <img src="./readme_files/logo.png" width="160">
 </p>
 
 # Entry Management App
