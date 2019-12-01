@@ -144,7 +144,7 @@ table td, table th {
 }
 table thead tr {
   height: 60px;
-  background: #5b1275;
+  background: #555;
 }
 table tbody tr {
   height: 50px;
@@ -175,12 +175,12 @@ table td.r, table th.r {
 }
 
 tbody tr:nth-child(even) {
-  background-color: var(--divider-color);
-  color: var(--medium-text-color);
+  background-color: #99999990;
+  color: #333;
 }
 tbody tr:nth-child(odd) {
-  background-color: var(--light-primary-color);
-  color: var(--medium-text-color);
+  background-color: #88888890;
+  color: #333;
 }
 
 tbody tr {

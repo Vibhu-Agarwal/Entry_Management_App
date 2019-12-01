@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block mcd_content %}
-<div class="main_center_div">
+<div class="main_center_div_wide">
     {% load widget_tweaks %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/ongoing_visit.css' %}">
@@ -19,7 +19,7 @@
 
         <form>
             {% csrf_token %}
-            <button type="submit" formmethod="post">Checkout</button>
+            <button class="ongoing-btn-submit" type="submit" formmethod="post">Checkout</button>
         </form>
     {% else %}
         <h1>No Ongoing Visit</h1>

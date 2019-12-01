@@ -13,6 +13,9 @@ Sets up the DB, creating:
 
 
 class Command(BaseCommand):
+    """
+    em_setup: Command to set-up database for the application
+    """
     help = help_message
 
     def handle(self, *args, **kwargs):

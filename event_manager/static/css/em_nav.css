@@ -3,7 +3,7 @@
   margin-top: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #4b0082;
+  background-color: #a9a9a9;
 }
 
 .nav_li {
@@ -17,10 +17,12 @@
 
 .nav_li a {
   display: block;
-  color: white;
+  color: #eee;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+
+  transition: color 0.3s,background-color 0.3s;
 }
 
 .nav_li a:hover:not(.active) {

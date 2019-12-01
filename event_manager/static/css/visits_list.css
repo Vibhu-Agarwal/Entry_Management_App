@@ -33,3 +33,25 @@
     background-color: var(--button-bg-color);
     width: 32%;
 }
+
+.three-button-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+.three-button{
+    text-transform: none;
+    color: #444;
+    padding: 20px 30px;
+    background-color: #f9f9f9;
+    text-decoration: none;
+    transition: color 0.3s, background-color 0.3s;
+    margin-top: 20px;
+    border-radius: 20%;
+}
+
+.three-button:hover{
+    color: #eee;
+    background-color: #a9a9a9;
+}

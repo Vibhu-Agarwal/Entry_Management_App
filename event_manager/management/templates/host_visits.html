@@ -22,41 +22,15 @@
 
     <h2>{{visits_header}}</h2>
 
-    <div class="three-btn-group">
 
-        <form id='switchform' method="get"></form>
+    <div class="three-button-group">
 
-        <button class="three-btn" form="switchform"
-                formaction="{% url 'management:host_visits_list' %}?visit_type=past"
-                type="submit" value="Past">
-            Past
-        </button>
+                <a class="three-button" href="{% url 'management:host_visits_list' %}?visit_type=past">Past</a>
 
-        <button class="three-btn" form="switchform"
-                formaction="{% url 'management:host_visits_list' %}?visit_type=ongoing"
-                type="submit" value="Ongoing">
-            Ongoing
-        </button>
+                <a class="three-button" href="{% url 'management:host_visits_list' %}?visit_type=ongoing">Ongoing</a>
 
-        <button class="three-btn" form="switchform"
-                formaction="{% url 'management:host_visits_list' %}?visit_type=planned"
-                type="submit" value="Planned">
-            Planned
-        </button>
-    </div>
+                <a class="three-button" href="{% url 'management:host_visits_list' %}?visit_type=planned">Planned</a>
 
-    <div class="filter">
-        <ul>
-            <li>
-                <a href="{% url 'management:host_visits_list' %}?visit_type=past">Past</a>
-            </li>
-            <li>
-                <a href="{% url 'management:host_visits_list' %}?visit_type=ongoing">Ongoing</a>
-            </li>
-            <li>
-                <a href="{% url 'management:host_visits_list' %}?visit_type=planned">Planned</a>
-            </li>
-        </ul>
     </div>
 
     {% if all_visits %}

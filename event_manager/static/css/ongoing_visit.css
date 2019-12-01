@@ -12,3 +12,11 @@
 .ongoing-table-header{
     align-content: center
 }
+.ongoing-table{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    /*max-width: 70%;*/
+}
+

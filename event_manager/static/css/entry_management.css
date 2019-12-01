@@ -1,16 +1,16 @@
 :root {
     
-  --dark-primary-color: #0288D1;
-  --extra-dark: #280045;
+  --dark-primary-color: #f1f1f1;
+  --extra-dark: #f9f9f9;
   --light-primary-color: #B3E5FC;
-  --primary-color: #03A9F4; 
-  --light-text-color: #FFFFFF;
-  --accent-color: #536DFE;   
+  --primary-color: #f9f9f9;
+  --light-text-color: #333;
+  --accent-color: #f9f9f9;
   --dark-text-color: #212121;
   --medium-text-color: #525252;
   --secondary-text-color: #757575;
   --divider-color: #BDBDBD;
-  --hover-dark: #4B0082;
+  --hover-dark: #444;
     
     
   --body-bg-color: var(--primary-color); 
@@ -58,13 +58,21 @@ h2 {
   border-radius: 5px;
   background-color: var(--mcd-color);
   padding: 20px 30px;
+  text-align: center;
 }
 .main_center_div_wide {
     width: 70%;
-    margin-left: 15%;
   border-radius: 5px;
   background-color: var(--mcd-color);
   padding: 20px 30px;
+  position: relative;
+  margin: 0 auto;
+
+}
+.ongoing-btn-submit{
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,0);
 }
 
 
@@ -98,6 +106,21 @@ input[type=submit]:hover {
 }
 
 .welcome-text {
-  color: var(--light-text-color);
+  color: #222;
   font-size: large;
+}
+
+.bg-img{
+  background-image: url('../images/welcome.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 300px;
+}
+
+@media (max-width: 575.98px) {
+    .bg-img{
+        height: 100px;
+    }
 }
