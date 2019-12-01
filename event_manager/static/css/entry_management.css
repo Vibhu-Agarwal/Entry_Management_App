@@ -96,3 +96,8 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: var(--submit-hover-bg);
 }
+
+.welcome-text {
+  color: var(--light-text-color);
+  font-size: large;
+}

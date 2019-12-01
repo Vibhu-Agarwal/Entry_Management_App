@@ -3,7 +3,7 @@
 {% block mcd_content %}
 <div class="main_center_div">
     {% load widget_tweaks %}
-    <div>
+    <div class="welcome-text">
         {% if user.is_authenticated %}
             <h2>Welcome {{user}}!</h2>
             {% if user.is_host %}
@@ -14,6 +14,9 @@
                 You can create new hosts by sending them Sign-Up URL links to their mail
                 or you can create new office branches established to be chosen by the Hosts.
                 If you want to pay a Visit to a host, you can use your original mail on New Visit page.
+            {% else %}
+                You can view you past or planned visits in Visitor Visits section.
+                If you have an ongoing visit, it will be visible under Ongoing Visit section.
             {% endif %}
         {% else %}
             <h2>Welcome!</h2>
