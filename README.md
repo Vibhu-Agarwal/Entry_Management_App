@@ -1,4 +1,5 @@
 
+
 <p align="center">
   <img src="./logo/logo.png" width="160">
 </p>
@@ -21,6 +22,18 @@
 ## About
 
 Entry Management App is a web application that can be used at entry-points at several places, partcularly targetting offices where it needs to digitalize their process of maintaining records of visitors and visits. The application keeps the users updated about entry and exit of the visit through text messages and mails.
+
+### Workflow
+The App comprises of three types of Users: Managers, Employees/Hosts and Visitors.
+<p align="center">
+  <img src="./readme_files/visitor_manager_host.png" width="160">
+</p>
+Managers can create New Hosts by entering their email in the application. The app generates and sends a unique sign-up link to the person [The token used with unique sign-up link is stored as hash using bcrypt in DB].
+
+Once a host successfully signs up in the application, visitors can select one of the host on New Visit page. Any person except people from management can fill the New Visit form which triggers notifications to Hosts on Check-In.
+The New Visit Form looks for the free slots of the intended Host and indicates error on the New Visit form if tried to book a visit when the host is busy.
+
+Check-out of a visit can be done from both Host and Visitor ends. As soon as the visit is checked out, an email is sent to the Visitor informing about all the details of the Visit.
 
 ### Tech Stack Used
 The application backed by Django framework and for its back-end and uses SQLite3 as database to store data. It also makes use of Twilio APIs to send SMS to Hosts of the Visit. The front-end of the application is written in HTML and CSS and uses AJAX calls with forms for auto-completion.
@@ -76,6 +89,11 @@ $ python manage.py em_setup
 ```bash
 $ python manage.py runserver
 ```  
+
+Initial Admin email: `superuser@emweb.in`
+Initial Admin password: Same as `EM_EMAIL_HOST_PASSWORD` value.
+Initial Manager email: `manageruser@emweb.in`
+Initial Manager password: Same as `EM_EMAIL_HOST_PASSWORD` value.
 
 ## File Structure
 

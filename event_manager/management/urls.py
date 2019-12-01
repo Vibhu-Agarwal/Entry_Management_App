@@ -10,5 +10,5 @@ urlpatterns = [
     path('visits/host/', ListHostVisitsView.as_view(), name='host_visits_list'),
     path('visits/ongoing/', OngoingVisitAndCheckOutView.as_view(), name='checkout_visit'),
     path('management/new-host/', ManagementTokenAuthView.as_view(), name='management_new_host'),
-    path('home/', HomeView.as_view(), name='home_page'),
+    path('', HomeView.as_view(), name='home_page'),
 ]
