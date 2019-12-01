@@ -420,6 +420,9 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
 
 
 class NewOfficeBranchView(LoginRequiredMixin, IsManagementMixin, FormView):
+    """
+    View for Managers to Enter Details of different branches of their Visit Place
+    """
     template_name = 'management/new_office_branch.html'
     success_url = reverse_lazy('management:home_page')
     form_class = OfficeBranchForm
