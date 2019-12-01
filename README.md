@@ -115,17 +115,12 @@ Initial Manager password: Same as `EM_EMAIL_HOST_PASSWORD` value.
 Entry_Management_App/
 ├── event_manager
 │   ├── api
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── migrations
-│   │   ├── models.py
 │   │   ├── urls.py
 │   │   └── views.py
 │   ├── event_manager
 │   │   ├── settings.py
 │   │   └── urls.py
 │   ├── management
-│   │   ├── admin.py
 │   │   ├── forms.py
 │   │   ├── mailing.py
 │   │   ├── messaging.py
@@ -143,9 +138,7 @@ Entry_Management_App/
 │   │   └── css
 │   ├── templates
 │   ├── users
-│   │   ├── admin.py
 │   │   ├── forms.py
-│   │   ├── managers.py
 │   │   ├── migrations
 │   │   ├── models.py
 │   │   ├── permissions.py
@@ -154,7 +147,6 @@ Entry_Management_App/
 │   │   ├── urls.py
 │   │   └── views.py
 │   └── visit
-│       ├── admin.py
 │       ├── forms.py
 │       ├── migrations
 │       ├── models.py
