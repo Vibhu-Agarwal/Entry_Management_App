@@ -180,4 +180,7 @@ Entry_Management_App/
 [![License](https://img.shields.io/github/license/Vibhu-Agarwal/Entry_Management_App?style=for-the-badge)](https://github.com/Vibhu-Agarwal/Entry_Management_App/blob/master/LICENSE)
 
 ## Icons
-<a href="https://iconscout.com/icon/meeting-time-1605675" target="_blank">Meeting time Icon</a> by <a href="https://iconscout.com/contributors/iconscout" target="_blank">Iconscout Freebies</a>
+<a href="https://iconscout.com/icon/meeting-time-1605675" target="_blank">Meeting time Icon</a> by <a href="https://iconscout.com/contributors/iconscout" target="_blank">Iconscout Freebies</a>  
+<a href="https://iconscout.com/icon/podium-147" target="_blank">Podium Icon</a> by <a href="https://iconscout.com/contributors/jemismali" target="_blank">Jemis Mali</a>  
+<a href="https://iconscout.com/icon/schedule-1543422" target="_blank">Schedule Icon</a> by <a href="https://iconscout.com/contributors/iconscout">Iconscout Freebies</a> on <a href="https://iconscout.com">Iconscout</a>  
+<a href="https://iconscout.com/icon/email-1760083" target="_blank">Email Icon</a> by <a href="https://iconscout.com/contributors/promotion-king">Promotion King</a> on <a href="https://iconscout.com">Iconscout</a>
