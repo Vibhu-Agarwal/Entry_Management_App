@@ -169,7 +169,22 @@ Entry_Management_App/
 ## Gallery
 
 <p align="center">
-  <img src="./readme_files/new_visit.png">
+  <img src="./readme_files/new_host.png" width="500">
+</p>
+<p align="center">
+  <img src="./readme_files/host_pic.png" width="500">
+</p>
+<p align="center">
+  <img src="./readme_files/new_visit.png" width="500">
+</p>
+<p align="center">
+  <img src="./readme_files/visitor_ongoing_visit.png" width="500">
+</p>
+<p align="center">
+  <img src="./readme_files/past_visits.png" width="500">
+</p>
+<p align="center">
+  <img src="./readme_files/new_office_branch.png" width="500">
 </p>
 
 
