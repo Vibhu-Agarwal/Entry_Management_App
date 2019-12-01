@@ -13,6 +13,9 @@
 
 - [Index](#index)
 - [About](#about)
+  - [Workflow](#workflow)
+  - [Tech Stack Used](#tech-stack-used)
+  - [SummerGeeks](#summer-geeks)
 - [Usage](#usage)
 - [File Structure](#file-structure)
 - [Gallery](#gallery)
@@ -103,7 +106,7 @@ $ python manage.py runserver
 
 Initial Admin email: `superuser@emweb.in`  
 Initial Admin password: Same as `EM_EMAIL_HOST_PASSWORD` value.  
-Initial Manager email: `manageruser@emweb.in`  
+Initial Manager email: **`manageruser@emweb.in`**  
 Initial Manager password: Same as `EM_EMAIL_HOST_PASSWORD` value.
 
 ## File Structure
