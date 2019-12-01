@@ -76,7 +76,7 @@ $ cd event_manager
 - Get credentials and a trial number [Twilio](www.twilio.com/referral/vqcjRB).
 - Make sure 2FA is disabled on your mail account and [Less secure app access](https://myaccount.google.com/lesssecureapps) is turned on.
 
-- Edit the values of variables in the `set_env_vars` file and save the changes.
+- Edit the values of variables in the **`set_env_vars`** file and save the changes.
 ```bash
 export EM_EMAIL_HOST_USER="YOUR_(G)MAIL_ID"
 export EM_EMAIL_HOST_PASSWORD="YOUR_(G)MAIL_PASSWORD"
@@ -96,6 +96,8 @@ $ source set_env_vars
 ```bash
 $ python manage.py makemigrations
 $ python manage.py migrate
+```  
+```bash
 $ python manage.py em_setup
 ```  
 
@@ -104,6 +106,7 @@ $ python manage.py em_setup
 ```bash
 $ python manage.py runserver
 ```  
+Start off by appointing Hosts for your workplace!  
 
 Initial Admin email: `superuser@emweb.in`  
 Initial Admin password: Same as `EM_EMAIL_HOST_PASSWORD` value.  
