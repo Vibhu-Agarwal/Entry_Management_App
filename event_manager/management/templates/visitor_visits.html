@@ -21,19 +21,16 @@
     <!--===============================================================================================-->
 
     <h2>{{visits_header}}</h2>
-    <div class="filter">
-        <ul>
-            <li>
-                <a href="{% url 'management:visitor_visits_list' %}?visit_type=past">Past</a>
-            </li>
-            <li>
-                <a href="{% url 'management:visitor_visits_list' %}?visit_type=ongoing">Ongoing</a>
-            </li>
-            <li>
-                <a href="{% url 'management:visitor_visits_list' %}?visit_type=planned">Planned</a>
-            </li>
-        </ul>
+
+
+    <div class="three-button-group">
+
+        <a class="three-button" href="{% url 'management:visitor_visits_list' %}?visit_type=past">Past</a>
+        <a class="three-button" href="{% url 'management:visitor_visits_list' %}?visit_type=ongoing">Ongoing</a>
+        <a class="three-button" href="{% url 'management:visitor_visits_list' %}?visit_type=planned">Planned</a>
+
     </div>
+
     {% if all_visits %}
 	<div class="limiter">
         <table class="table">
@@ -86,7 +83,9 @@
 	<script src="{% static 'js/main.js' %}"></script>
 
     {% else %}
+    <div class="no-data-div">
         No {{visits_header}}
+    </div>
     {% endif %}
 </div>
 {% endblock %}
