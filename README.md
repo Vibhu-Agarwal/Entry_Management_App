@@ -155,7 +155,7 @@ Entry_Management_App/
 ## Gallery
 
 <p align="center">
-  <img src="./gallery/img1.png">
+  <img src="./readme_files/new_visit.png">
 </p>
 
 
