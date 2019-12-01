@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block mcd_content %}
+<div class="main_center_div">
+    {% load widget_tweaks %}
+    <h2>New Office Branch</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Create New Office Branch</button>
+        </form>
+</div>
+{% endblock %}

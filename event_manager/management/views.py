@@ -26,6 +26,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 # Forms
 from visit.forms import VisitModelForm
+from users.forms import OfficeBranchForm
 from management.forms import (VisitVisitorModelForm, ManagementTokenAuthForm)
 # Mailing
 from management.mailing import send_host_signup_email
@@ -415,4 +416,20 @@ class ManagementTokenAuthView(LoginRequiredMixin, IsManagementMixin, FormView):
     def get_context_data(self, **kwargs):
         context_data = super(ManagementTokenAuthView, self).get_context_data(**kwargs)
         context_data['page_title'] = 'Manager | Create New Host'
+        return context_data
+
+
+class NewOfficeBranchView(LoginRequiredMixin, IsManagementMixin, FormView):
+    template_name = 'management/new_office_branch.html'
+    success_url = reverse_lazy('management:home_page')
+    form_class = OfficeBranchForm
+
+    def form_valid(self, form):
+        if form.is_valid():
+            form.save()
+        return super(NewOfficeBranchView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context_data = super(NewOfficeBranchView, self).get_context_data(**kwargs)
+        context_data['page_title'] = 'Manager | New Office Branch'
         return context_data

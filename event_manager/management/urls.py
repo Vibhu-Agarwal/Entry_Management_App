@@ -1,5 +1,5 @@
 from management.views import (HomeView, NewVisitAndVisitorView, ListVisitorVisitsView, ListHostVisitsView,
-                              OngoingVisitAndCheckOutView, ManagementTokenAuthView)
+                              OngoingVisitAndCheckOutView, ManagementTokenAuthView, NewOfficeBranchView)
 from django.urls import path
 
 app_name = 'management'
@@ -10,5 +10,6 @@ urlpatterns = [
     path('visits/host/', ListHostVisitsView.as_view(), name='host_visits_list'),
     path('visits/ongoing/', OngoingVisitAndCheckOutView.as_view(), name='checkout_visit'),
     path('management/new-host/', ManagementTokenAuthView.as_view(), name='management_new_host'),
+    path('management/new-office-branch/', NewOfficeBranchView.as_view(), name='management_new_office'),
     path('', HomeView.as_view(), name='home_page'),
 ]

@@ -2,7 +2,7 @@ from django import forms
 from django.conf import settings
 from django.forms import HiddenInput
 from django.contrib.auth.forms import UserCreationForm
-from users.models import User
+from users.models import User, OfficeBranch
 
 HOST_REPR = settings.HOST_REPR
 
@@ -23,6 +23,15 @@ class HostSignUpForm(UserCreationForm):
                   # 'office_branch', 'password1', 'password2')
                   'office_branch', 'user_type', 'password1', 'password2')
         widgets = {'user_type': HiddenInput()}
+
+
+class OfficeBranchForm(forms.ModelForm):
+    """
+    Forms for Mangers to enter data for Office Branch Addresses
+    """
+    class Meta:
+        model = OfficeBranch
+        fields = '__all__'
 
 
 class VisitorModelForm(forms.ModelForm):
