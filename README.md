@@ -164,3 +164,6 @@ Entry_Management_App/
 
 ## License
 [![License](https://img.shields.io/github/license/Vibhu-Agarwal/Entry_Management_App?style=for-the-badge)](https://github.com/Vibhu-Agarwal/Entry_Management_App/blob/master/LICENSE)
+
+## Icons
+<a href="https://iconscout.com/icon/meeting-time-1605675" target="_blank">Meeting time Icon</a> by <a href="https://iconscout.com/contributors/iconscout" target="_blank">Iconscout Freebies</a>
