@@ -174,13 +174,11 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-
-if not ALLOW_EMAILS:
-    raise ImproperlyConfigured("ALLOW_EMAILS is unset")
-if not EMAIL_HOST_USER:
-    raise ImproperlyConfigured("'EM_EMAIL_HOST_USER' environment variable is unset")
-if not EMAIL_HOST_PASSWORD:
-    raise ImproperlyConfigured("'EM_EMAIL_HOST_PASSWORD' environment variable is unset")
+if ALLOW_EMAILS:
+    if not EMAIL_HOST_USER:
+        raise ImproperlyConfigured("'EM_EMAIL_HOST_USER' environment variable is unset")
+    if not EMAIL_HOST_PASSWORD:
+        raise ImproperlyConfigured("'EM_EMAIL_HOST_PASSWORD' environment variable is unset")
 if ALLOW_SMS:
     if not TWILIO_ACCOUNT_SID:
         raise ImproperlyConfigured("'EM_TWILIO_ACCOUNT_SID' environment variable is unset")
