@@ -24,13 +24,24 @@
 Entry Management App is a web application that can be used at entry-points at several places, partcularly targetting offices where it needs to digitalize their process of maintaining records of visitors and visits. The application keeps the users updated about entry and exit of the visit through text messages and mails.
 
 ### Workflow
-The App comprises of three types of Users: Managers, Employees/Hosts and Visitors.
 <p align="center">
   <img src="./readme_files/visitor_manager_host.png" width="160">
 </p>
+The App comprises of three types of Users: Managers, Employees/Hosts and Visitors.
+
+<p align="center">
+  <img src="./readme_files/manager.png" width="160">
+</p>
 Managers can create New Hosts by entering their email in the application. The app generates and sends a unique sign-up link to the person [The token used with unique sign-up link is stored as hash using bcrypt in DB].
 
+<p align="center">
+  <img src="./readme_files/email.png" width="160">
+</p>
 Once a host successfully signs up in the application, visitors can select one of the host on New Visit page. Any person except people from management can fill the New Visit form which triggers notifications to Hosts on Check-In.
+
+<p align="center">
+  <img src="./readme_files/free_slots.png" width="160">
+</p>
 The New Visit Form looks for the free slots of the intended Host and indicates error on the New Visit form if tried to book a visit when the host is busy.
 
 Check-out of a visit can be done from both Host and Visitor ends. As soon as the visit is checked out, an email is sent to the Visitor informing about all the details of the Visit.
