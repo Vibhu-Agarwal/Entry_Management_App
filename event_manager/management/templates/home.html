@@ -3,6 +3,8 @@
 {% block mcd_content %}
 <div class="main_center_div">
     {% load widget_tweaks %}
-    {{user}}
+    {% if user.is_authenticated %}
+        <h2>{{user}}</h2>
+    {% endif %}
 </div>
 {% endblock %}

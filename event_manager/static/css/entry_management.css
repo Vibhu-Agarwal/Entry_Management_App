@@ -48,19 +48,23 @@ button:hover {
   background-color: var(--submit-hover-bg);
 }
 
+h2 {
+  color: var(--light-text-color);
+  text-shadow: -1px 0 var(--hover-dark), 0 1px var(--hover-dark), 1px 0 var(--hover-dark), 0 -1px var(--hover-dark);
+}
 .main_center_div {
 	width: 50%;
-	margin-left: 25%;
+	margin-left: 20%;
   border-radius: 5px;
   background-color: var(--mcd-color);
-  padding: 20px;
+  padding: 20px 30px;
 }
 .main_center_div_wide {
     width: 70%;
     margin-left: 15%;
   border-radius: 5px;
   background-color: var(--mcd-color);
-  padding: 20px;
+  padding: 20px 30px;
 }
 
 
