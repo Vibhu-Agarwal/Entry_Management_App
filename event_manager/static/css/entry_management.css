@@ -1,12 +1,40 @@
+:root {
+    
+  --dark-primary-color: #0288D1;
+  --extra-dark: #280045;
+  --light-primary-color: #B3E5FC;
+  --primary-color: #03A9F4; 
+  --light-text-color: #FFFFFF;
+  --accent-color: #536DFE;   
+  --dark-text-color: #212121;
+  --medium-text-color: ##525252;
+  --secondary-text-color: #757575;
+  --divider-color: #BDBDBD;
+  --hover-dark: #4B0082;
+    
+    
+  --body-bg-color: var(--primary-color); 
+  --button-bg-color: var(--accent-color);
+  --button-txt-color: var(--light-text-color);
+  --mcd-color: var(--dark-primary-color);
+  --submit-hover-bg: var(--hover-dark);
+}
+
 body
 {
     margin: 0;
+    background-color: var(--body-bg-color);
 }
 
-.button {
-  background-color: #4CAF50; /* Green */
+label
+{
+    color: var(--light-text-color);
+}
+
+button {
+  background-color: var(--button-bg-color);
   border: none;
-  color: white;
+  color: var(--button-txt-color);
   padding: 20px;
   text-align: center;
   text-decoration: none;
@@ -16,20 +44,34 @@ body
   cursor: pointer;
 }
 
+button:hover {
+  background-color: var(--submit-hover-bg);
+}
+
 .main_center_div {
 	width: 50%;
 	margin-left: 25%;
   border-radius: 5px;
-  background-color: #f2f2f2;
+  background-color: var(--mcd-color);
+  padding: 20px;
+}
+.main_center_div_wide {
+    width: 70%;
+    margin-left: 15%;
+  border-radius: 5px;
+  background-color: var(--mcd-color);
   padding: 20px;
 }
 
 
 input[type=text],
-input[type=email], select {
+input[type=email],
+input[type=password], select {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
+  background-color: var(--light-primary-color);
+  color: var(--dark-text-color);
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -38,8 +80,8 @@ input[type=email], select {
 
 input[type=submit] {
   width: 100%;
-  background-color: #4CAF50;
-  color: white;
+  background-color: var(--button-bg-color);
+  color: var(--button-txt-color);
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
@@ -48,5 +90,5 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-  background-color: #45a049;
+  background-color: var(--submit-hover-bg);
 }

@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 
-{% block mcd_content %}
+{% block mcd_wide_content %}
+<div class="main_center_div_wide">
     {% load widget_tweaks %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/visits_list.css' %}">
+
+
+    <!--===============================================================================================-->
+        <link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico' %}"/>
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <!--===============================================================================================-->
 
     <h2>{{visits_header}}</h2>
     <div class="filter">
@@ -19,42 +35,60 @@
             </li>
         </ul>
     </div>
+
     {% if all_visits %}
+	<div class="limiter">
         <table class="table">
 
-            <tr class="table-header ">
-                <th>Visit Id</th>
-                <th>Visitor</th>
-                <th>Check-In Time</th>
-                <th>Check-Out Time</th>
-                <th>Purpose</th>
-            </tr>
-
-            {% for visit in all_visits %}
-                <tr class="table-row">
-                    <td> {{visit.id}} </td>
-                    <td> {{visit.visitor}} </td>
-                    <td> {{visit.in_time}} </td>
-                    <td>
-                    {% if visit.out_time %}
-                        {{visit.out_time}}
-                    {% else %}
-                        -
-                    {% endif %}
-                    </td>
-                    <td>
-                    {% if visit.purpose %}
-                        {{visit.purpose}}
-                    {% else %}
-                        -
-                    {% endif %}
-                    </td>
+            <thead>
+                <tr class="table-header table100-head">
+                    <th class="column1">Visit Id</th>
+                    <th class="column2">Visitor</th>
+                    <th class="column3">Check-In Time</th>
+                    <th class="column4">Check-Out Time</th>
+                    <th class="column5">Purpose</th>
                 </tr>
-            {% endfor %}
-            {% block dashboard_base %}
-            {% endblock %}
+            </thead>
+            <tbody>
+
+                {% for visit in all_visits %}
+                    <tr class="table-row">
+                        <td class="column1"> {{visit.id}} </td>
+                        <td class="column2"> {{visit.visitor}} </td>
+                        <td class="column3"> {{visit.in_time}} </td>
+                        <td class="column4">
+                        {% if visit.out_time %}
+                            {{visit.out_time}}
+                        {% else %}
+                            -
+                        {% endif %}
+                        </td>
+                        <td class="column5">
+                        {% if visit.purpose %}
+                            {{visit.purpose}}
+                        {% else %}
+                            -
+                        {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
         </table>
+	</div>
+
+    <!--===============================================================================================-->
+        <script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+    <!--===============================================================================================-->
+        <script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+        <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!--===============================================================================================-->
+        <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+    <!--===============================================================================================-->
+	<script src="{% static 'js/main.js' %}"></script>
+
     {% else %}
         No {{visits_header}}
     {% endif %}
+</div>
 {% endblock %}

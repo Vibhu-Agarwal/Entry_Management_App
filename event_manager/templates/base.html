@@ -3,6 +3,7 @@
     <head>
         {% load static %}
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{page_title}}</title>
         <link rel="stylesheet" type="text/css" href="{% static 'css/docs.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
@@ -17,9 +18,11 @@
     </head>
     <body>
         {% include "nav_bar.html" %}
-        <div class="main_center_div">
-            {% block mcd_content %}
-            {% endblock %}
-        </div>
+
+        {% block mcd_content %}
+        {% endblock %}
+
+        {% block mcd_wide_content %}
+        {% endblock %}
     </body>
 </html>

@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block mcd_content %}
+<div class="main_center_div">
     {% load widget_tweaks %}
         <form method="post">
           {% csrf_token %}
           {{ form.as_p }}
           <button type="submit">Create New Host</button>
         </form>
+</div>
 {% endblock %}

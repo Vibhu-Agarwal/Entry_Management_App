@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block mcd_content %}
+<div class="main_center_div">
     {% load widget_tweaks %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/ongoing_visit.css' %}">
@@ -23,4 +24,5 @@
     {% else %}
         <h1>No Ongoing Visit</h1>
     {% endif %}
+</div>
 {% endblock %}
