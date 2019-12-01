@@ -9,7 +9,10 @@
                  <li class="nav_li"><a href="{% url "management:checkout_visit" %}">Ongoing Visit</a></li>
                 {% endif %}
 
+
+                 {% if user.user_type != "management" %}
                  <li class="nav_li"><a href="{% url "management:visitor_visits_list" %}">Visitor Visits</a></li>
+                 {% endif %}
 
                  {% if user.is_host %}
                  <li class="nav_li"><a href="{% url "management:host_visits_list" %}">Host Visits</a></li>

@@ -19,7 +19,8 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse
 # Permissions
 from django.contrib.auth.mixins import LoginRequiredMixin
-from users.permissions import IsHostOrLoggedOutMixin, IsHostMixin, IsManagementMixin
+from users.permissions import (IsHostOrLoggedOutMixin, IsHostMixin,
+                               IsManagementMixin, IsNotManagementMixin)
 # Views
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
@@ -92,7 +93,7 @@ class ListHostVisitsView(LoginRequiredMixin, IsHostMixin, TemplateView):
         return context_data
 
 
-class ListVisitorVisitsView(LoginRequiredMixin, TemplateView):
+class ListVisitorVisitsView(LoginRequiredMixin, IsNotManagementMixin, TemplateView):
     """
     View to List Visits of a person, in which he/she participated as a Visitor
     """
