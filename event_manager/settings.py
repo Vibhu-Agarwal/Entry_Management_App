@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import django_heroku
 from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -21,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*arvy=e9d^nk!-cb&*9irda1e=cj5ssbi$-k#ih+doon#u4+9e'
+SECRET_KEY = os.environ.get('EM_APP_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -168,7 +169,7 @@ USE_TZ = True
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -186,3 +187,6 @@ if ALLOW_SMS:
         raise ImproperlyConfigured("'EM_TWILIO_AUTH_TOKEN' environment variable is unset")
     if not TWILIO_NUMBER:
         raise ImproperlyConfigured("'EM_TWILIO_NUMBER' environment variable is unset")
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
