@@ -52,9 +52,6 @@ Check-out of a visit can be done from both Host and Visitor ends. As soon as the
 ### Tech Stack Used
 The application backed by Django framework and for its back-end and uses SQLite3 as database to store data. It also makes use of Twilio APIs to send SMS to Hosts of the Visit. The front-end of the application is written in HTML and CSS and uses AJAX calls with forms for auto-completion.
 
-### Summer Geeks
-The project is made for my submission for the [SummerGeeks 2020](https://summergeeks.in/) challenge.
-
 ## Usage
 
 If you just want to do a simple test run of the application, just follow these steps:
