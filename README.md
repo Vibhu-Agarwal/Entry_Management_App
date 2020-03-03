@@ -15,7 +15,6 @@
 - [About](#about)
   - [Workflow](#workflow)
   - [Tech Stack Used](#tech-stack-used)
-  - [SummerGeeks](#summer-geeks)
 - [Usage](#usage)
 - [File Structure](#file-structure)
 - [Gallery](#gallery)
